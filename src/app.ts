@@ -1,16 +1,16 @@
-import express from "express";
+import express from 'express';
 import cors from 'cors';
-import pathErrorHandler from "./app/middlewares/pathErrorHandler";
-import globalErrorHandler from "./app/middlewares/globalErrorHandler";
+import pathErrorHandler from './app/middlewares/pathErrorHandler';
+import globalErrorHandler from './app/middlewares/globalErrorHandler';
+import { appRouter } from './app/routes';
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
 
-app.get('/', (req, res, next) => {
-    throw new Error('Error occured')
-})
+// Connects version 1 API routes
+app.use('/api/v1/', appRouter);
 
 // Handle 404 errors
 app.use('*', pathErrorHandler);

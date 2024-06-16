@@ -10,10 +10,10 @@ const globalErrorHandler = (err, req, res, next) => {
         errorMessages: [
             {
                 path: '',
-                message: (_b = err === null || err === void 0 ? void 0 : err.message) !== null && _b !== void 0 ? _b : 'Something went wrong!'
-            }
+                message: (_b = err === null || err === void 0 ? void 0 : err.message) !== null && _b !== void 0 ? _b : 'Something went wrong!',
+            },
         ],
-        stack: err === null || err === void 0 ? void 0 : err.stack
+        stack: err === null || err === void 0 ? void 0 : err.stack,
     };
     res.status(statusCode).json(errorObj);
 };

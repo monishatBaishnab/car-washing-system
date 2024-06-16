@@ -9,10 +9,16 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.userServices = void 0;
-const createUserIntoDB = (payload) => __awaiter(void 0, void 0, void 0, function* () {
-    return payload;
-});
-exports.userServices = {
-    createUserIntoDB
+const validateRequest = (schema) => {
+    return (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            yield schema.parseAsync({ body: req.body });
+            next();
+        }
+        catch (error) {
+            console.log(error);
+            next(error);
+        }
+    });
 };
+exports.default = validateRequest;
