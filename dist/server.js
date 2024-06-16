@@ -21,3 +21,18 @@ const bootstrap = () => __awaiter(void 0, void 0, void 0, function* () {
     });
 });
 bootstrap();
+// Handle Unhandled Promise Rejections
+process.on('unhandledRejection', () => {
+    console.log('😈 unhandledRejection is detected, shutting down the server....');
+    if (server) {
+        server.close(() => {
+            process.exit(1);
+        });
+    }
+    process.exit(1);
+});
+// Handle Uncaught Exceptions
+process.on('uncaughtException', () => {
+    console.log('😈 uncaughtException is detected, shutting down the server....');
+    process.exit(1);
+});
