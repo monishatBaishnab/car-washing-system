@@ -9,7 +9,9 @@ const bootstrap = async () => {
     console.log(`Server running on port: ${config.port}`);
   });
   try {
-    await mongoose.connect(config.db_uri as string, {dbName: 'car-washing-system'})
+    await mongoose.connect(config.db_uri as string, {
+      dbName: 'car-washing-system',
+    });
     console.log('Database connected successfully.');
   } catch (error) {
     console.log(error);

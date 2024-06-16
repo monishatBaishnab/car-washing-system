@@ -6,7 +6,7 @@ const user_route_1 = require("../modules/user/user.route");
 const router = (0, express_1.Router)();
 const routes = [
     {
-        path: '/users',
+        path: '/auth',
         route: user_route_1.UserRoutes,
     },
 ];

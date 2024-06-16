@@ -5,6 +5,10 @@ import validateRequest from '../../middlewares/validateRequest';
 
 const router = Router();
 
-router.post('/', validateRequest(UserValidations.createUserValidationSchema), userControllers.createUser)
+router.post(
+  '/signup',
+  validateRequest(UserValidations.createUserValidationSchema),
+  userControllers.createUser,
+);
 
 export const UserRoutes = router;

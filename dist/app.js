@@ -12,7 +12,7 @@ const app = (0, express_1.default)();
 app.use((0, cors_1.default)());
 app.use(express_1.default.json());
 // Connects version 1 API routes
-app.use('/api/v1/', routes_1.appRouter);
+app.use('/api/', routes_1.appRouter);
 // Handle 404 errors
 app.use('*', pathErrorHandler_1.default);
 // Global Error Handler Middleware

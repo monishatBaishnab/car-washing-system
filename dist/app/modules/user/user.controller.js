@@ -22,10 +22,10 @@ const createUser = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, voi
     (0, sendResponse_1.default)(res, {
         success: true,
         statusCode: http_status_1.OK,
-        message: "User registered successfully",
-        data: newUser
+        message: 'User registered successfully',
+        data: newUser,
     });
 }));
 exports.userControllers = {
-    createUser
+    createUser,
 };

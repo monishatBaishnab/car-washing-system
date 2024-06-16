@@ -3,23 +3,26 @@ import { TUser } from './user.interface';
 import bcrypt from 'bcrypt';
 import config from '../../config';
 
-const userSchema = new Schema<TUser>({
-  name: { type: String, required: true },
-  email: { type: String, required: true, unique: true },
-  password: { type: String, required: false },
-  phone: { type: String, required: true },
-  address: { type: String, required: true },
-  role: { type: String, enum: ['admin', 'user'], required: true },
-}, { timestamps: true });
+const userSchema = new Schema<TUser>(
+  {
+    name: { type: String, required: true },
+    email: { type: String, required: true, unique: true },
+    password: { type: String, required: false },
+    phone: { type: String, required: true },
+    address: { type: String, required: true },
+    role: { type: String, enum: ['admin', 'user'], required: true },
+  },
+  { timestamps: true },
+);
 
 userSchema.pre('save', async function (next) {
   const user: TUser = this;
   user.password = await bcrypt.hash(
     user.password,
-    Number(config.bcrypt_salt_round)
+    Number(config.bcrypt_salt_round),
   );
   next();
-})
+});
 
 const User = model<TUser>('user', userSchema);
 

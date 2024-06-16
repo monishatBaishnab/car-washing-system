@@ -10,7 +10,7 @@ app.use(cors());
 app.use(express.json());
 
 // Connects version 1 API routes
-app.use('/api/v1/', appRouter);
+app.use('/api/', appRouter);
 
 // Handle 404 errors
 app.use('*', pathErrorHandler);

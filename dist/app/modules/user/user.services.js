@@ -20,5 +20,5 @@ const createUserIntoDB = (payload) => __awaiter(void 0, void 0, void 0, function
     return findUser;
 });
 exports.userServices = {
-    createUserIntoDB
+    createUserIntoDB,
 };
