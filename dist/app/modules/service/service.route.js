@@ -1,1 +1,17 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.ServiceRoutes = void 0;
+const express_1 = require("express");
+const validateRequest_1 = __importDefault(require("../../middlewares/validateRequest"));
+const service_validation_1 = require("./service.validation");
+const service_controller_1 = require("./service.controller");
+const router = (0, express_1.Router)();
+router.get('/', service_controller_1.ServiceControllers.fetchAllService);
+router.get('/:id', service_controller_1.ServiceControllers.fetchSingleService);
+router.post('/', (0, validateRequest_1.default)(service_validation_1.ServiceValidations.createServiceValidation), service_controller_1.ServiceControllers.createService);
+router.put('/:id', (0, validateRequest_1.default)(service_validation_1.ServiceValidations.updateServiceValidation), service_controller_1.ServiceControllers.updateService);
+router.delete('/:id', service_controller_1.ServiceControllers.deleteService);
+exports.ServiceRoutes = router;
