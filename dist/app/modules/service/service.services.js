@@ -15,19 +15,25 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ServiceServices = void 0;
 const service_model_1 = __importDefault(require("./service.model"));
 const createServiceIntoDB = (payload) => __awaiter(void 0, void 0, void 0, function* () {
-    return yield service_model_1.default.create(payload);
+    const result = yield service_model_1.default.create(payload);
+    return result;
 });
 const fetchAllServiceFromDB = (query) => __awaiter(void 0, void 0, void 0, function* () {
-    return yield service_model_1.default.find();
+    const result = yield service_model_1.default.find();
+    return result;
 });
 const fetchSingleServiceFromDB = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    return yield service_model_1.default.findById(id);
+    console.log(id);
+    const result = yield service_model_1.default.findById(id);
+    return result;
 });
 const updatedServiceFromDB = (id, payload) => __awaiter(void 0, void 0, void 0, function* () {
-    return service_model_1.default.findByIdAndUpdate(id, payload, { new: true });
+    const result = service_model_1.default.findByIdAndUpdate(id, payload, { new: true });
+    return result;
 });
 const deleteServiceFromDB = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    return service_model_1.default.findByIdAndUpdate(id, { isDeleted: true }, { new: true });
+    const result = service_model_1.default.findByIdAndUpdate(id, { isDeleted: true }, { new: true });
+    return result;
 });
 exports.ServiceServices = {
     createServiceIntoDB,

@@ -67,5 +67,5 @@ exports.ServiceControllers = {
     fetchAllService,
     fetchSingleService,
     updateService,
-    deleteService
+    deleteService,
 };

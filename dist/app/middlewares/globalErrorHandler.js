@@ -14,6 +14,7 @@ const globalErrorHandler = (err, req, res, next) => {
             },
         ],
         stack: err === null || err === void 0 ? void 0 : err.stack,
+        error: err
     };
     res.status(statusCode).json(errorObj);
 };

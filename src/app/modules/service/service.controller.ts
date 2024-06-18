@@ -1,6 +1,6 @@
-import { OK } from 'http-status';
+import { NOT_FOUND, OK } from 'http-status';
 import catchAsync from '../../utils/catchAsync';
-import sendResponse from '../../utils/sendResponse';
+import sendResponse, { TResponse } from '../../utils/sendResponse';
 import { ServiceServices } from './service.services';
 
 const createService = catchAsync(async (req, res) => {
@@ -26,7 +26,9 @@ const fetchAllService = catchAsync(async (req, res) => {
 });
 
 const fetchSingleService = catchAsync(async (req, res) => {
-  const services = await ServiceServices.fetchSingleServiceFromDB(req.params.id);
+  const services = await ServiceServices.fetchSingleServiceFromDB(
+    req.params.id,
+  );
 
   sendResponse(res, {
     success: true,
@@ -37,7 +39,10 @@ const fetchSingleService = catchAsync(async (req, res) => {
 });
 
 const updateService = catchAsync(async (req, res) => {
-  const updatedService = await ServiceServices.updatedServiceFromDB(req.params.id, req.body);
+  const updatedService = await ServiceServices.updatedServiceFromDB(
+    req.params.id,
+    req.body,
+  );
 
   sendResponse(res, {
     success: true,
@@ -48,7 +53,9 @@ const updateService = catchAsync(async (req, res) => {
 });
 
 const deleteService = catchAsync(async (req, res) => {
-  const deletedService = await ServiceServices.deleteServiceFromDB(req.params.id);
+  const deletedService = await ServiceServices.deleteServiceFromDB(
+    req.params.id,
+  );
 
   sendResponse(res, {
     success: true,
@@ -63,5 +70,5 @@ export const ServiceControllers = {
   fetchAllService,
   fetchSingleService,
   updateService,
-  deleteService
+  deleteService,
 };

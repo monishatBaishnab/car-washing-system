@@ -12,23 +12,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const mongoose_1 = require("mongoose");
-const bcrypt_1 = __importDefault(require("bcrypt"));
-const config_1 = __importDefault(require("../../config"));
-const userSchema = new mongoose_1.Schema({
-    name: { type: String, required: true },
-    email: { type: String, required: true, unique: true },
-    password: { type: String, required: false },
-    phone: { type: String, required: true },
-    address: { type: String, required: true },
-    role: { type: String, enum: ['admin', 'user'], required: true },
-}, { timestamps: true });
-userSchema.pre('save', function (next) {
-    return __awaiter(this, void 0, void 0, function* () {
-        const user = this;
-        user.password = yield bcrypt_1.default.hash(user.password, Number(config_1.default.bcrypt_salt_round));
-        next();
-    });
+const service_model_1 = __importDefault(require("../service/service.model"));
+const slot_model_1 = __importDefault(require("./slot.model"));
+const createSlotIntoDB = (slotData) => __awaiter(void 0, void 0, void 0, function* () {
+    const findService = yield service_model_1.default.findById(slotData.service);
+    const newSlot = slot_model_1.default.create(slotData);
+    if (!newSlot) {
+        throw new Error("Failed to create new slot.");
+    }
+    return {};
 });
-const User = (0, mongoose_1.model)('User', userSchema);
-exports.default = User;

@@ -10,15 +10,15 @@ router.get('/', ServiceControllers.fetchAllService);
 router.get('/:id', ServiceControllers.fetchSingleService);
 
 router.post(
-    '/',
-    validateRequest(ServiceValidations.createServiceValidation),
-    ServiceControllers.createService,
+  '/',
+  validateRequest(ServiceValidations.createServiceValidation),
+  ServiceControllers.createService,
 );
 
 router.put(
-    '/:id',
-      validateRequest(ServiceValidations.updateServiceValidation),
-    ServiceControllers.updateService,
+  '/:id',
+  validateRequest(ServiceValidations.updateServiceValidation),
+  ServiceControllers.updateService,
 );
 
 router.delete('/:id', ServiceControllers.deleteService);

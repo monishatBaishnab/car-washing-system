@@ -9,7 +9,7 @@ const createServiceValidation = zod_1.z.object({
         duration: zod_1.z.number(),
         price: zod_1.z.number(),
         isDeleted: zod_1.z.boolean(),
-    })
+    }),
 });
 const updateServiceValidation = zod_1.z.object({
     body: zod_1.z.object({
@@ -18,9 +18,9 @@ const updateServiceValidation = zod_1.z.object({
         duration: zod_1.z.number().optional(),
         price: zod_1.z.number().optional(),
         isDeleted: zod_1.z.boolean().optional(),
-    })
+    }),
 });
 exports.ServiceValidations = {
     createServiceValidation,
-    updateServiceValidation
+    updateServiceValidation,
 };

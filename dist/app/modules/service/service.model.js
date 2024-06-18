@@ -8,21 +8,25 @@ const serviceSchema = new mongoose_1.Schema({
     price: { type: Number, required: true },
     isDeleted: { type: Boolean, required: false, default: false },
 }, { timestamps: true });
-serviceSchema.pre('find', function () {
-    this.setQuery({ isDeleted: { $ne: true } });
+serviceSchema.pre('find', function (next) {
+    this.find({ isDeleted: { $ne: true } });
+    next();
 });
-serviceSchema.post('find', function (result) {
-    if (!(result === null || result === void 0 ? void 0 : result.length)) {
-        throw new Error("No matching services found.");
-    }
+// serviceSchema.post('find', function (result) {
+//     if(!result?.length){
+//         // throw new Error("No matching services found.");
+//         // sendResponse
+//     }
+// })
+serviceSchema.pre('findOne', function (next) {
+    this.findOne({ isDeleted: { $ne: true } });
+    next();
 });
-serviceSchema.pre('findOne', function () {
-    this.setQuery({ isDeleted: { $ne: true } });
-});
-serviceSchema.post('findOne', function (result) {
-    if (!result) {
-        throw new Error("No matching service found.");
-    }
-});
+// serviceSchema.post('findOne', function (result) {
+//     if(!result){
+//         // throw new Error("No matching service found.");
+//         // sendResponse
+//     }
+// })
 const Service = (0, mongoose_1.model)('Service', serviceSchema);
 exports.default = Service;

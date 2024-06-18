@@ -13,6 +13,7 @@ const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
       },
     ],
     stack: err?.stack,
+    error: err
   };
 
   res.status(statusCode).json(errorObj);
