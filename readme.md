@@ -2,6 +2,16 @@
 
 The Car Wash Booking System is a web application that allows users to book car wash services. The system manages user accounts, services, slots, and bookings. Administrators can create, update, and delete services and slots, while users can book available slots for the services they need.
 
+### Technology Stack 
+
+- **Backend Framework:** Node.js with Express
+- **Database:** MongoDB (using Mongoose)
+- **Authentication:** bcrypt, jsonwebtoken
+- **Configuration Management:** dotenv
+- **CORS Handling:** cors
+- **Data Validation:** zod
+- **HTTP Status Codes:** http-status
+
 ### Project Setup
 
 1. **Clone the Repository**
