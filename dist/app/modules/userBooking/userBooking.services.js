@@ -14,13 +14,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserBookingServices = void 0;
 const booking_model_1 = __importDefault(require("../booking/booking.model"));
-const fetchUserBookingFromDB = (query) => __awaiter(void 0, void 0, void 0, function* () {
-    const userBookings = yield booking_model_1.default.find({ customer: query === null || query === void 0 ? void 0 : query.customer })
+const fetchUserBookingFromDB = (query, user) => __awaiter(void 0, void 0, void 0, function* () {
+    const customer = user === null || user === void 0 ? void 0 : user.userId;
+    const userBookings = yield booking_model_1.default.find({ customer })
         .populate('service')
         .populate('slot')
         .populate({ path: 'customer', select: '-password' });
     return userBookings;
 });
 exports.UserBookingServices = {
-    fetchUserBookingFromDB
+    fetchUserBookingFromDB,
 };

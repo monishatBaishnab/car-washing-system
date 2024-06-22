@@ -1,25 +1,63 @@
 import { ErrorRequestHandler } from 'express';
-import { BAD_REQUEST } from 'http-status';
+import { BAD_REQUEST, UNAUTHORIZED } from 'http-status';
+import { TErrorMessages } from '../interface/errors';
+import { ZodError } from 'zod';
+import handleZodError from '../errors/handleZodError';
+import handleValidationError from '../errors/handleValidationError';
+import handleCastError from '../errors/handleCastError';
+import AppError from '../errors/AppError';
 
 const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
-  let statusCode = BAD_REQUEST;
-  let errorObj = {
-    success: false,
-    message: err?.message ?? 'Something went wrong!',
-    statusCode: statusCode,
-    errorMessages: [
+  let statusCode = err?.statusCode ?? BAD_REQUEST;
+  let message = err?.message ?? 'Something went wrong!';
+  let errorMessages: TErrorMessages[] = [
+    {
+      path: '',
+      message: err?.message ?? 'Something went wrong!',
+    },
+  ];
+
+  if (err instanceof ZodError) {
+    const simplifiedError = handleZodError(err);
+
+    statusCode = simplifiedError?.statusCode;
+    message = simplifiedError?.message;
+    errorMessages = simplifiedError?.errorMessages as TErrorMessages[];
+  } else if (err?.name === 'ValidationError') {
+    const simplifiedError = handleValidationError(err);
+
+    statusCode = simplifiedError?.statusCode;
+    message = simplifiedError?.message;
+    errorMessages = simplifiedError?.errorMessages as TErrorMessages[];
+  } else if (err?.name === 'CastError') {
+    const simplifiedError = handleCastError(err);
+
+    statusCode = simplifiedError?.statusCode;
+    message = simplifiedError?.message;
+    errorMessages = simplifiedError?.errorMessages as TErrorMessages[];
+  } else if (err?.code === 11000) {
+    const simplifiedError = handleCastError(err);
+
+    statusCode = simplifiedError?.statusCode;
+    message = simplifiedError?.message;
+    errorMessages = simplifiedError?.errorMessages as TErrorMessages[];
+  } else if (err instanceof AppError) {
+    message = err.message;
+    errorMessages = [
       {
         path: '',
-        message: err?.message ?? 'Something went wrong!',
+        message: err.message,
       },
-    ],
-    // stack: err?.stack,
-    // error: err
-  };
+    ];
+  }
 
-  
-
-  res.status(statusCode).json(errorObj);
+  res.status(statusCode).json({
+    success: false,
+    statusCode,
+    message,
+    ...(err !== UNAUTHORIZED && { errorMessages }),
+    stack: err?.stack
+  });
 };
 
 export default globalErrorHandler;

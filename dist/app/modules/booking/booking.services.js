@@ -39,8 +39,9 @@ const fetchAllBookingFromDB = (query) => __awaiter(void 0, void 0, void 0, funct
         .populate({ path: 'customer', select: '-password' });
     return bookings;
 });
-const createBookingIntoDB = (bookingData) => __awaiter(void 0, void 0, void 0, function* () {
-    const { serviceId, slotId, customer } = bookingData, rest = __rest(bookingData, ["serviceId", "slotId", "customer"]);
+const createBookingIntoDB = (bookingData, customerData) => __awaiter(void 0, void 0, void 0, function* () {
+    const { serviceId, slotId } = bookingData, rest = __rest(bookingData, ["serviceId", "slotId"]);
+    const customer = customerData === null || customerData === void 0 ? void 0 : customerData.userId;
     const newBookingData = Object.assign(Object.assign({}, rest), { slot: slotId, service: serviceId, customer });
     // Validate customer
     const existsCustomer = yield user_model_1.default.findById(customer);
@@ -96,5 +97,5 @@ const createBookingIntoDB = (bookingData) => __awaiter(void 0, void 0, void 0, f
 });
 exports.BookingServices = {
     fetchAllBookingFromDB,
-    createBookingIntoDB
+    createBookingIntoDB,
 };

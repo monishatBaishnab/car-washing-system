@@ -52,14 +52,16 @@ const loginUserWithEmailPassword = (payload) => __awaiter(void 0, void 0, void 0
     const tokenData = {
         userId: existUser === null || existUser === void 0 ? void 0 : existUser._id,
         email: existUser === null || existUser === void 0 ? void 0 : existUser.email,
-        role: existUser === null || existUser === void 0 ? void 0 : existUser.role
+        role: existUser === null || existUser === void 0 ? void 0 : existUser.role,
     };
     // Create a JWT token
-    const token = jsonwebtoken_1.default.sign(tokenData, config_1.default.jwt_access_token, { expiresIn: '10d' });
+    const token = jsonwebtoken_1.default.sign(tokenData, config_1.default.jwt_access_token, {
+        expiresIn: '10d',
+    });
     // Return the token and user data without the password
     return { token, data: userData };
 });
 exports.UserServices = {
     createUserIntoDB,
-    loginUserWithEmailPassword
+    loginUserWithEmailPassword,
 };

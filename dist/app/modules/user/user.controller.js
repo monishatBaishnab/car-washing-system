@@ -28,9 +28,9 @@ const createUser = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, voi
 }));
 const loginUser = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const loggedInUserData = yield user_services_1.UserServices.loginUserWithEmailPassword(req.body);
-    (0, sendResponse_1.default)(res, Object.assign({ success: true, statusCode: http_status_1.OK, message: "User logged in successfully" }, loggedInUserData));
+    (0, sendResponse_1.default)(res, Object.assign({ success: true, statusCode: http_status_1.OK, message: 'User logged in successfully' }, loggedInUserData));
 }));
 exports.UserControllers = {
     createUser,
-    loginUser
+    loginUser,
 };

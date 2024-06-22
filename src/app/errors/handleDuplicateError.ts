@@ -1,11 +1,12 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const http_status_1 = require("http-status");
-const handleDuplicateError = (err) => {
+import { CONFLICT } from "http-status";
+import { TGenericErrorResponse } from "../interface/errors";
+
+const handleDuplicateError = (err: any) : TGenericErrorResponse=> {
     const match = err.message.match(/"([^"]+)"/);
     const extractedMsg = match ? match[1] : null;
+
     return {
-        statusCode: http_status_1.CONFLICT,
+        statusCode: CONFLICT,
         message: `${extractedMsg} is already exists.`,
         errorMessages: [
             {
@@ -14,4 +15,4 @@ const handleDuplicateError = (err) => {
             },
         ],
     };
-};
+}

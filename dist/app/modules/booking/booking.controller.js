@@ -21,21 +21,21 @@ const fetchAllBooking = (0, catchAsync_1.default)((req, res) => __awaiter(void 0
     const bookings = yield booking_services_1.BookingServices.fetchAllBookingFromDB(req.query);
     (0, sendResponse_1.default)(res, {
         success: true,
-        message: "All bookings retrieved successfully",
+        message: 'All bookings retrieved successfully',
         statusCode: http_status_1.OK,
-        data: bookings
+        data: bookings,
     });
 }));
 const createBooking = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const newBooking = yield booking_services_1.BookingServices.createBookingIntoDB(req.body);
+    const newBooking = yield booking_services_1.BookingServices.createBookingIntoDB(req.body, req.user);
     (0, sendResponse_1.default)(res, {
         success: true,
-        message: "Booking created successful",
+        message: 'Booking created successful',
         statusCode: http_status_1.OK,
-        data: newBooking
+        data: newBooking,
     });
 }));
 exports.BookingControllers = {
     fetchAllBooking,
-    createBooking
+    createBooking,
 };

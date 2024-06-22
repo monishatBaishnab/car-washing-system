@@ -15,17 +15,19 @@ const createUser = catchAsync(async (req, res) => {
 });
 
 const loginUser = catchAsync(async (req, res) => {
-  const loggedInUserData = await UserServices.loginUserWithEmailPassword(req.body);
+  const loggedInUserData = await UserServices.loginUserWithEmailPassword(
+    req.body,
+  );
 
   sendResponse(res, {
     success: true,
     statusCode: OK,
-    message: "User logged in successfully",
+    message: 'User logged in successfully',
     ...loggedInUserData,
   });
 });
 
 export const UserControllers = {
   createUser,
-  loginUser
+  loginUser,
 };

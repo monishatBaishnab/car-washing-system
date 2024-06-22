@@ -10,8 +10,8 @@ const createTimeSlots = (startTime, endTime, slotDuration) => {
     // If endMinute exceeds slotDuration, use endMinute; otherwise, default to 0
     const adjustedEndMinute = endMinute >= slotDuration ? endMinute : 0;
     // Calculate the total minutes from midnight for the start and end times
-    const totalStartMinutes = (startHour * 60) + adjustedStartMinute;
-    const totalEndMinutes = (endHour * 60) + adjustedEndMinute;
+    const totalStartMinutes = startHour * 60 + adjustedStartMinute;
+    const totalEndMinutes = endHour * 60 + adjustedEndMinute;
     let currentSlotStartTime = totalStartMinutes;
     const slots = [];
     // Loop to create time slots within given time range
@@ -30,7 +30,7 @@ const createTimeSlots = (startTime, endTime, slotDuration) => {
         // Add the formatted time slot to the slots array
         slots.push({
             startTime: formattedSlotStart,
-            endTime: formattedSlotEnd
+            endTime: formattedSlotEnd,
         });
         // Move to the next slot start time
         currentSlotStartTime += slotDuration;

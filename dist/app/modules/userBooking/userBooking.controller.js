@@ -18,14 +18,14 @@ const catchAsync_1 = __importDefault(require("../../utils/catchAsync"));
 const sendResponse_1 = __importDefault(require("../../utils/sendResponse"));
 const userBooking_services_1 = require("./userBooking.services");
 const fetchUserBooking = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const userBookings = yield userBooking_services_1.UserBookingServices.fetchUserBookingFromDB(req.query);
+    const userBookings = yield userBooking_services_1.UserBookingServices.fetchUserBookingFromDB(req.query, req.user);
     (0, sendResponse_1.default)(res, {
         success: true,
         message: 'User bookings retrieved successfully',
         statusCode: http_status_1.OK,
-        data: userBookings
+        data: userBookings,
     });
 }));
 exports.UserBookingController = {
-    fetchUserBooking
+    fetchUserBooking,
 };

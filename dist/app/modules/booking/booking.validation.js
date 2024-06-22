@@ -13,8 +13,8 @@ const createBookingSchema = zod_1.z.object({
         vehicleModel: zod_1.z.string(),
         manufacturingYear: zod_1.z.number(),
         registrationPlate: zod_1.z.string(),
-    })
+    }),
 });
 exports.BookingValidations = {
-    createBookingSchema
+    createBookingSchema,
 };

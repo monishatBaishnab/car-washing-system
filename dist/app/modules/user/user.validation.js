@@ -25,10 +25,10 @@ const loginUserValidationSchema = zod_1.z.object({
             invalid_type_error: 'Email must be a valid email address.',
         })
             .email(),
-        password: zod_1.z.string()
+        password: zod_1.z.string(),
     }),
 });
 exports.UserValidations = {
     createUserValidationSchema,
-    loginUserValidationSchema
+    loginUserValidationSchema,
 };

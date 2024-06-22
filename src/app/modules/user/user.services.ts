@@ -20,7 +20,10 @@ const loginUserWithEmailPassword = async (payload: Partial<TUser>) => {
   }
 
   // Compare provided password with stored password hash
-  const passwordMatch = await bcrypt.compare(payload?.password as string, existUser?.password);
+  const passwordMatch = await bcrypt.compare(
+    payload?.password as string,
+    existUser?.password,
+  );
   if (!passwordMatch) {
     throw new AppError(UNAUTHORIZED, 'Login failed');
   }
@@ -32,20 +35,18 @@ const loginUserWithEmailPassword = async (payload: Partial<TUser>) => {
   const tokenData = {
     userId: existUser?._id,
     email: existUser?.email,
-    role: existUser?.role
+    role: existUser?.role,
   };
 
   // Create a JWT token
-  const token = jwt.sign(
-    tokenData,
-    config.jwt_access_token as string, 
-    {expiresIn: '10d'}
-  )
+  const token = jwt.sign(tokenData, config.jwt_access_token as string, {
+    expiresIn: '10d',
+  });
   // Return the token and user data without the password
   return { token, data: userData };
 };
 
 export const UserServices = {
   createUserIntoDB,
-  loginUserWithEmailPassword
+  loginUserWithEmailPassword,
 };

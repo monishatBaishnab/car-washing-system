@@ -23,7 +23,11 @@ const updatedServiceFromDB = async (id: string, payload: Partial<TService>) => {
 };
 
 const deleteServiceFromDB = async (id: string) => {
-  const result = Service.findByIdAndUpdate(id, { isDeleted: true }, { new: true });
+  const result = Service.findByIdAndUpdate(
+    id,
+    { isDeleted: true },
+    { new: true },
+  );
   return result;
 };
 

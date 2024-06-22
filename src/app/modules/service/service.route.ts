@@ -21,10 +21,15 @@ router.post(
 
 router.put(
   '/:id',
+  auth(USER_ROLE.admin as TUserRole),
   validateRequest(ServiceValidations.updateServiceValidation),
   ServiceControllers.updateService,
 );
 
-router.delete('/:id', ServiceControllers.deleteService);
+router.delete(
+  '/:id',
+  auth(USER_ROLE.admin as TUserRole),
+  ServiceControllers.deleteService,
+);
 
 export const ServiceRoutes = router;

@@ -36,7 +36,7 @@ const createSlotIntoDB = (slotData) => __awaiter(void 0, void 0, void 0, functio
     if (!serviceExists) {
         throw new AppError_1.default(http_status_1.NOT_FOUND, 'Service not found.');
     }
-    existingSlots.forEach(element => {
+    existingSlots.forEach((element) => {
         const existingStartTime = new Date(`1970-01-01T${element.startTime}`);
         const slotStartTime = new Date(`1970-01-01T${slotData.startTime}`);
         const existingEndTime = new Date(`1970-01-01T${element.endTime}`);

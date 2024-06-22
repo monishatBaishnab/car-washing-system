@@ -22,14 +22,14 @@ const auth = (...requiredRoles) => {
         var _a;
         const token = (_a = req.headers.authorization) === null || _a === void 0 ? void 0 : _a.split(' ')[1];
         if (!token) {
-            throw new AppError_1.default(http_status_1.UNAUTHORIZED, "You have no access to this route");
+            throw new AppError_1.default(http_status_1.UNAUTHORIZED, 'You have no access to this route');
         }
         jsonwebtoken_1.default.verify(token, config_1.default.jwt_access_token, (err, decoded) => {
             if (err) {
-                throw new AppError_1.default(http_status_1.UNAUTHORIZED, "You have no access to this route");
+                throw new AppError_1.default(http_status_1.UNAUTHORIZED, 'You have no access to this route');
             }
             if (requiredRoles && !requiredRoles.includes(decoded === null || decoded === void 0 ? void 0 : decoded.role)) {
-                throw new AppError_1.default(http_status_1.UNAUTHORIZED, "You have no access to this route");
+                throw new AppError_1.default(http_status_1.UNAUTHORIZED, 'You have no access to this route');
             }
             req.user = decoded;
             next();
