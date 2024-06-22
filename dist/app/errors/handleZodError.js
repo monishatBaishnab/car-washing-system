@@ -9,13 +9,13 @@ const handleZodError = (err) => {
         var _a, _b;
         return {
             path: (_a = issue === null || issue === void 0 ? void 0 : issue.path) === null || _a === void 0 ? void 0 : _a[((_b = issue === null || issue === void 0 ? void 0 : issue.path) === null || _b === void 0 ? void 0 : _b.length) - 1],
-            message: issue === null || issue === void 0 ? void 0 : issue.message
+            message: issue === null || issue === void 0 ? void 0 : issue.message,
         };
     });
     return {
         message,
         statusCode,
-        errorMessages
+        errorMessages,
     };
 };
 exports.default = handleZodError;

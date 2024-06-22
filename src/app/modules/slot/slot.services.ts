@@ -4,6 +4,7 @@ import Service from '../service/service.model';
 import { TSlot } from './slot.interface';
 import Slot from './slot.model';
 import { createTimeSlots } from './slot.utils';
+import { populate } from 'dotenv';
 
 const fetchAvailableSlotFromDB = async (query: Record<string, unknown>) => {
   const queryObj: Record<string, unknown> = { isBooked: 'available' };
@@ -16,7 +17,7 @@ const fetchAvailableSlotFromDB = async (query: Record<string, unknown>) => {
     queryObj.service = serviceId;
   }
 
-  const result = await Slot.find(queryObj);
+  const result = await Slot.find(queryObj).populate('service');
 
   return result;
 };

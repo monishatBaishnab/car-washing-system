@@ -8,7 +8,11 @@ import { TUserRole } from '../user/user.interface';
 
 const router = Router();
 
-router.get('/',auth(USER_ROLE.admin as TUserRole), BookingControllers.fetchAllBooking);
+router.get(
+  '/',
+  auth(USER_ROLE.admin as TUserRole),
+  BookingControllers.fetchAllBooking,
+);
 
 router.post(
   '/',

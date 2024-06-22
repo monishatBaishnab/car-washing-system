@@ -6,7 +6,7 @@ import { UserBookingServices } from './userBooking.services';
 const fetchUserBooking = catchAsync(async (req, res) => {
   const userBookings = await UserBookingServices.fetchUserBookingFromDB(
     req.query,
-    req.user
+    req.user,
   );
 
   sendResponse(res, {

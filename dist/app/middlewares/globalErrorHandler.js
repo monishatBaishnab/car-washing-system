@@ -9,6 +9,7 @@ const handleZodError_1 = __importDefault(require("../errors/handleZodError"));
 const handleValidationError_1 = __importDefault(require("../errors/handleValidationError"));
 const handleCastError_1 = __importDefault(require("../errors/handleCastError"));
 const AppError_1 = __importDefault(require("../errors/AppError"));
+const handleDuplicateError_1 = __importDefault(require("../errors/handleDuplicateError"));
 const globalErrorHandler = (err, req, res, next) => {
     var _a, _b, _c;
     let statusCode = (_a = err === null || err === void 0 ? void 0 : err.statusCode) !== null && _a !== void 0 ? _a : http_status_1.BAD_REQUEST;
@@ -38,7 +39,7 @@ const globalErrorHandler = (err, req, res, next) => {
         errorMessages = simplifiedError === null || simplifiedError === void 0 ? void 0 : simplifiedError.errorMessages;
     }
     else if ((err === null || err === void 0 ? void 0 : err.code) === 11000) {
-        const simplifiedError = (0, handleCastError_1.default)(err);
+        const simplifiedError = (0, handleDuplicateError_1.default)(err);
         statusCode = simplifiedError === null || simplifiedError === void 0 ? void 0 : simplifiedError.statusCode;
         message = simplifiedError === null || simplifiedError === void 0 ? void 0 : simplifiedError.message;
         errorMessages = simplifiedError === null || simplifiedError === void 0 ? void 0 : simplifiedError.errorMessages;
@@ -52,7 +53,10 @@ const globalErrorHandler = (err, req, res, next) => {
             },
         ];
     }
-    res.status(statusCode).json(Object.assign(Object.assign({ success: false, statusCode,
-        message }, (err !== http_status_1.UNAUTHORIZED && { errorMessages })), { stack: err === null || err === void 0 ? void 0 : err.stack }));
+    res.status(statusCode).json(Object.assign({ success: false, statusCode,
+        message }, (err.statusCode !== http_status_1.UNAUTHORIZED && {
+        errorMessages,
+        stack: err === null || err === void 0 ? void 0 : err.stack,
+    })));
 };
 exports.default = globalErrorHandler;

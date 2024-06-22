@@ -12,7 +12,7 @@ const auth = (...requiredRoles: TUserRole[]) => {
     if (!token) {
       throw new AppError(UNAUTHORIZED, 'You have no access to this route');
     }
-    
+
     jwt.verify(
       token as string,
       config.jwt_access_token as string,
@@ -23,7 +23,7 @@ const auth = (...requiredRoles: TUserRole[]) => {
         if (requiredRoles && !requiredRoles.includes(decoded?.role)) {
           throw new AppError(UNAUTHORIZED, 'You have no access to this route');
         }
-        
+
         req.user = decoded as JwtPayload;
         next();
       },

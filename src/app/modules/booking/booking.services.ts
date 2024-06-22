@@ -23,10 +23,13 @@ const fetchAllBookingFromDB = async (query: Record<string, unknown>) => {
   return bookings;
 };
 
-const createBookingIntoDB = async (bookingData: TBookingData, customerData: JwtPayload) => {
+const createBookingIntoDB = async (
+  bookingData: TBookingData,
+  customerData: JwtPayload,
+) => {
   const { serviceId, slotId, ...rest } = bookingData;
   const customer = customerData?.userId;
-  
+
   const newBookingData = {
     ...rest,
     slot: slotId,

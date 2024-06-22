@@ -17,24 +17,10 @@ serviceSchema.pre('find', function (next) {
   next();
 });
 
-// serviceSchema.post('find', function (result) {
-//     if(!result?.length){
-//         // throw new Error("No matching services found.");
-//         // sendResponse
-//     }
-// })
-
 serviceSchema.pre('findOne', function (next) {
   this.findOne({ isDeleted: { $ne: true } });
   next();
 });
-
-// serviceSchema.post('findOne', function (result) {
-//     if(!result){
-//         // throw new Error("No matching service found.");
-//         // sendResponse
-//     }
-// })
 
 const Service = model<TService>('Service', serviceSchema);
 

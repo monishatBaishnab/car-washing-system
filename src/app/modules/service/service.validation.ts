@@ -6,7 +6,7 @@ const createServiceValidation = z.object({
     description: z.string(),
     duration: z.number(),
     price: z.number(),
-    isDeleted: z.boolean(),
+    isDeleted: z.boolean().optional(),
   }),
 });
 

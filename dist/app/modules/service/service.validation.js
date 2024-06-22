@@ -8,7 +8,7 @@ const createServiceValidation = zod_1.z.object({
         description: zod_1.z.string(),
         duration: zod_1.z.number(),
         price: zod_1.z.number(),
-        isDeleted: zod_1.z.boolean(),
+        isDeleted: zod_1.z.boolean().optional(),
     }),
 });
 const updateServiceValidation = zod_1.z.object({

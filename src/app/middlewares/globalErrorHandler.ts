@@ -6,6 +6,7 @@ import handleZodError from '../errors/handleZodError';
 import handleValidationError from '../errors/handleValidationError';
 import handleCastError from '../errors/handleCastError';
 import AppError from '../errors/AppError';
+import handleDuplicateError from '../errors/handleDuplicateError';
 
 const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
   let statusCode = err?.statusCode ?? BAD_REQUEST;
@@ -36,7 +37,7 @@ const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
     message = simplifiedError?.message;
     errorMessages = simplifiedError?.errorMessages as TErrorMessages[];
   } else if (err?.code === 11000) {
-    const simplifiedError = handleCastError(err);
+    const simplifiedError = handleDuplicateError(err);
 
     statusCode = simplifiedError?.statusCode;
     message = simplifiedError?.message;
@@ -55,8 +56,10 @@ const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
     success: false,
     statusCode,
     message,
-    ...(err !== UNAUTHORIZED && { errorMessages }),
-    stack: err?.stack
+    ...(err.statusCode !== UNAUTHORIZED && {
+      errorMessages,
+      stack: err?.stack,
+    }),
   });
 };
 

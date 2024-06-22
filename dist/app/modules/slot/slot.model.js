@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = require("mongoose");
 const slotSchema = new mongoose_1.Schema({
-    service: { type: mongoose_1.Schema.ObjectId, required: true },
+    service: { type: mongoose_1.Schema.ObjectId, required: true, ref: 'Service' },
     date: { type: String, required: true },
     startTime: { type: String, required: true },
     endTime: { type: String, required: true },

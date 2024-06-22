@@ -13,7 +13,7 @@ const handleValidationError = (err) => {
     return {
         message,
         statusCode,
-        errorMessages
+        errorMessages,
     };
 };
 exports.default = handleValidationError;

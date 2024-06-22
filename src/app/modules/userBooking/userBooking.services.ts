@@ -1,7 +1,10 @@
 import { JwtPayload } from 'jsonwebtoken';
 import Booking from '../booking/booking.model';
 
-const fetchUserBookingFromDB = async (query: Record<string, unknown>, user: JwtPayload) => {
+const fetchUserBookingFromDB = async (
+  query: Record<string, unknown>,
+  user: JwtPayload,
+) => {
   const customer = user?.userId;
 
   const userBookings = await Booking.find({ customer })

@@ -27,7 +27,7 @@ const fetchAvailableSlotFromDB = (query) => __awaiter(void 0, void 0, void 0, fu
     if (serviceId) {
         queryObj.service = serviceId;
     }
-    const result = yield slot_model_1.default.find(queryObj);
+    const result = yield slot_model_1.default.find(queryObj).populate('service');
     return result;
 });
 const createSlotIntoDB = (slotData) => __awaiter(void 0, void 0, void 0, function* () {

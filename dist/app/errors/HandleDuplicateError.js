@@ -15,3 +15,4 @@ const handleDuplicateError = (err) => {
         ],
     };
 };
+exports.default = handleDuplicateError;
