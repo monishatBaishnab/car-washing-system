@@ -12,13 +12,12 @@ const fetchAllServiceFromDB = async (query: Record<string, unknown>) => {
 };
 
 const fetchSingleServiceFromDB = async (id: string) => {
-  console.log(id);
   const result = await Service.findById(id);
   return result;
 };
 
 const updatedServiceFromDB = async (id: string, payload: Partial<TService>) => {
-  const result = Service.findByIdAndUpdate(id, payload, { new: true });
+  const result = Service.findOneAndUpdate({ _id: id, isDeleted: { $ne: true }}, payload, { new: true });
   return result;
 };
 

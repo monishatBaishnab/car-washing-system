@@ -23,12 +23,11 @@ const fetchAllServiceFromDB = (query) => __awaiter(void 0, void 0, void 0, funct
     return result;
 });
 const fetchSingleServiceFromDB = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log(id);
     const result = yield service_model_1.default.findById(id);
     return result;
 });
 const updatedServiceFromDB = (id, payload) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = service_model_1.default.findByIdAndUpdate(id, payload, { new: true });
+    const result = service_model_1.default.findOneAndUpdate({ _id: id, isDeleted: { $ne: true } }, payload, { new: true });
     return result;
 });
 const deleteServiceFromDB = (id) => __awaiter(void 0, void 0, void 0, function* () {
