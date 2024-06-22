@@ -5,6 +5,8 @@ const express_1 = require("express");
 const user_route_1 = require("../modules/user/user.route");
 const service_route_1 = require("../modules/service/service.route");
 const slot_route_1 = require("../modules/slot/slot.route");
+const booking_route_1 = require("../modules/booking/booking.route");
+const userBooking_route_1 = require("../modules/userBooking/userBooking.route");
 const router = (0, express_1.Router)();
 const routes = [
     {
@@ -18,6 +20,14 @@ const routes = [
     {
         path: '/slots',
         route: slot_route_1.SlotRoutes,
+    },
+    {
+        path: '/bookings',
+        route: booking_route_1.BookingRoutes,
+    },
+    {
+        path: '/my-bookings',
+        route: userBooking_route_1.UserBookingRoutes,
     },
 ];
 routes.map(({ path, route }) => {

@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { userControllers } from './user.controller';
+import { UserControllers } from './user.controller';
 import { UserValidations } from './user.validation';
 import validateRequest from '../../middlewares/validateRequest';
 
@@ -8,7 +8,13 @@ const router = Router();
 router.post(
   '/signup',
   validateRequest(UserValidations.createUserValidationSchema),
-  userControllers.createUser,
+  UserControllers.createUser,
+);
+
+router.post(
+  '/login',
+  validateRequest(UserValidations.loginUserValidationSchema),
+  UserControllers.loginUser,
 );
 
 export const UserRoutes = router;

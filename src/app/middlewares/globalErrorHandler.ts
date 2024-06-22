@@ -6,15 +6,18 @@ const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
   let errorObj = {
     success: false,
     message: err?.message ?? 'Something went wrong!',
+    statusCode: statusCode,
     errorMessages: [
       {
         path: '',
         message: err?.message ?? 'Something went wrong!',
       },
     ],
-    stack: err?.stack,
-    error: err
+    // stack: err?.stack,
+    // error: err
   };
+
+  
 
   res.status(statusCode).json(errorObj);
 };

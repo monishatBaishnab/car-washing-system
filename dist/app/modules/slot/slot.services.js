@@ -13,17 +13,28 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SlotServices = void 0;
+const http_status_1 = require("http-status");
+const AppError_1 = __importDefault(require("../../errors/AppError"));
 const service_model_1 = __importDefault(require("../service/service.model"));
 const slot_model_1 = __importDefault(require("./slot.model"));
 const slot_utils_1 = require("./slot.utils");
 const fetchAvailableSlotFromDB = (query) => __awaiter(void 0, void 0, void 0, function* () {
-    return [];
+    const queryObj = { isBooked: 'available' };
+    const { date, serviceId } = query;
+    if (date) {
+        queryObj.date = date;
+    }
+    if (serviceId) {
+        queryObj.service = serviceId;
+    }
+    const result = yield slot_model_1.default.find(queryObj);
+    return result;
 });
 const createSlotIntoDB = (slotData) => __awaiter(void 0, void 0, void 0, function* () {
     const serviceExists = yield service_model_1.default.findById(slotData.service);
     const existingSlots = yield slot_model_1.default.find({ date: slotData === null || slotData === void 0 ? void 0 : slotData.date });
     if (!serviceExists) {
-        throw new Error('Service not found.');
+        throw new AppError_1.default(http_status_1.NOT_FOUND, 'Service not found.');
     }
     existingSlots.forEach(element => {
         const existingStartTime = new Date(`1970-01-01T${element.startTime}`);
@@ -31,7 +42,7 @@ const createSlotIntoDB = (slotData) => __awaiter(void 0, void 0, void 0, functio
         const existingEndTime = new Date(`1970-01-01T${element.endTime}`);
         const slotEndTime = new Date(`1970-01-01T${slotData.endTime}`);
         if (existingStartTime < slotEndTime && existingEndTime > slotStartTime) {
-            throw new Error('Slot overlaps with an existing slot.');
+            throw new AppError_1.default(http_status_1.CONFLICT, 'Slot overlaps with an existing slot.');
         }
     });
     const slotsData = [];

@@ -17,6 +17,18 @@ const createUserValidationSchema = zod_1.z.object({
         role: zod_1.z.enum(['admin', 'user']),
     }),
 });
+const loginUserValidationSchema = zod_1.z.object({
+    body: zod_1.z.object({
+        email: zod_1.z
+            .string({
+            required_error: 'Email is required.',
+            invalid_type_error: 'Email must be a valid email address.',
+        })
+            .email(),
+        password: zod_1.z.string()
+    }),
+});
 exports.UserValidations = {
     createUserValidationSchema,
+    loginUserValidationSchema
 };
