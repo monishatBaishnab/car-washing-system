@@ -30,10 +30,28 @@ const AppError_1 = __importDefault(require("../../errors/AppError"));
 const user_model_1 = __importDefault(require("./user.model"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const user_constant_1 = require("./user.constant");
+const createToken_1 = require("../../utils/createToken");
 const createUserIntoDB = (payload) => __awaiter(void 0, void 0, void 0, function* () {
-    const newUser = yield user_model_1.default.create(payload);
-    const findUser = user_model_1.default.findById(newUser._id).select('-password');
-    return findUser;
+    const userData = Object.assign(Object.assign({}, payload), { role: user_constant_1.USER_ROLE.user });
+    const newUser = yield user_model_1.default.create(userData);
+    let userToken;
+    if (newUser) {
+        userToken = (0, createToken_1.createToken)(newUser);
+    }
+    return userToken;
+});
+const createAdminIntoDB = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    const existUser = yield user_model_1.default.findById(id);
+    if (!existUser) {
+        throw new AppError_1.default(http_status_1.NOT_FOUND, 'User does not exist.');
+    }
+    const updatedUser = yield user_model_1.default.findByIdAndUpdate(id, { role: user_constant_1.USER_ROLE.admin }, { new: true });
+    let userToken;
+    if (updatedUser) {
+        userToken = (0, createToken_1.createToken)(updatedUser);
+    }
+    return userToken;
 });
 const loginUserWithEmailPassword = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     // Find user by email
@@ -59,9 +77,10 @@ const loginUserWithEmailPassword = (payload) => __awaiter(void 0, void 0, void 0
         expiresIn: '10d',
     });
     // Return the token and user data without the password
-    return { token, data: userData };
+    return token;
 });
 exports.UserServices = {
     createUserIntoDB,
+    createAdminIntoDB,
     loginUserWithEmailPassword,
 };

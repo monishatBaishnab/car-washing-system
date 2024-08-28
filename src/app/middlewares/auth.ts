@@ -6,6 +6,11 @@ import AppError from '../errors/AppError';
 import { UNAUTHORIZED } from 'http-status';
 import { TUserRole } from '../modules/user/user.interface';
 
+// Define a custom type that extends JwtPayload
+interface DecodedToken extends JwtPayload {
+  role: TUserRole;  // Ensure role is of type TUserRole
+}
+
 const auth = (...requiredRoles: TUserRole[]) => {
   return catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const token = req.headers.authorization?.split(' ')[1];
@@ -20,11 +25,13 @@ const auth = (...requiredRoles: TUserRole[]) => {
         if (err) {
           throw new AppError(UNAUTHORIZED, 'You have no access to this route');
         }
-        if (requiredRoles && !requiredRoles.includes(decoded?.role)) {
+        const decodedToken = decoded as DecodedToken; // Cast decoded to the custom type
+
+        if (requiredRoles && !requiredRoles.includes(decodedToken.role)) {
           throw new AppError(UNAUTHORIZED, 'You have no access to this route');
         }
 
-        req.user = decoded as JwtPayload;
+        req.user = decodedToken;  // req.user now has a 'role' property
         next();
       },
     );

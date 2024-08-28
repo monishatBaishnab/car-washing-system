@@ -10,7 +10,19 @@ const createUser = catchAsync(async (req, res) => {
     success: true,
     statusCode: OK,
     message: 'User registered successfully',
-    data: newUser,
+    data: { token: newUser },
+  });
+});
+
+const createAdmin = catchAsync(async (req, res) => {
+  const id = req?.params?.userId;
+  console.log(id);
+  const result = await UserServices.createAdminIntoDB(id);
+  sendResponse(res, {
+    success: true,
+    statusCode: OK,
+    message: 'Admin created successfully',
+    data: { token: result },
   });
 });
 
@@ -23,11 +35,12 @@ const loginUser = catchAsync(async (req, res) => {
     success: true,
     statusCode: OK,
     message: 'User logged in successfully',
-    ...loggedInUserData,
+    data: { token: loggedInUserData },
   });
 });
 
 export const UserControllers = {
   createUser,
+  createAdmin,
   loginUser,
 };

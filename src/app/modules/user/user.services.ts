@@ -5,11 +5,37 @@ import { TUser } from './user.interface';
 import User from './user.model';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import { USER_ROLE } from './user.constant';
+import { createToken } from '../../utils/createToken';
 
 const createUserIntoDB = async (payload: TUser) => {
-  const newUser = await User.create(payload);
-  const findUser = User.findById(newUser._id).select('-password');
-  return findUser;
+  const userData = {
+    ...payload,
+    role: USER_ROLE.user,
+  };
+  const newUser = await User.create(userData);
+  let userToken;
+  if (newUser) {
+    userToken = createToken(newUser);
+  }
+  return userToken;
+};
+
+const createAdminIntoDB = async (id: string) => {
+  const existUser = await User.findById(id);
+  if (!existUser) {
+    throw new AppError(NOT_FOUND, 'User does not exist.');
+  }
+  const updatedUser = await User.findByIdAndUpdate(
+    id,
+    { role: USER_ROLE.admin },
+    { new: true },
+  );
+  let userToken;
+  if (updatedUser) {
+    userToken = createToken(updatedUser);
+  }
+  return userToken;
 };
 
 const loginUserWithEmailPassword = async (payload: Partial<TUser>) => {
@@ -43,10 +69,11 @@ const loginUserWithEmailPassword = async (payload: Partial<TUser>) => {
     expiresIn: '10d',
   });
   // Return the token and user data without the password
-  return { token, data: userData };
+  return token;
 };
 
 export const UserServices = {
   createUserIntoDB,
+  createAdminIntoDB,
   loginUserWithEmailPassword,
 };

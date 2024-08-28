@@ -28,10 +28,11 @@ const auth = (...requiredRoles) => {
             if (err) {
                 throw new AppError_1.default(http_status_1.UNAUTHORIZED, 'You have no access to this route');
             }
-            if (requiredRoles && !requiredRoles.includes(decoded === null || decoded === void 0 ? void 0 : decoded.role)) {
+            const decodedToken = decoded; // Cast decoded to the custom type
+            if (requiredRoles && !requiredRoles.includes(decodedToken.role)) {
                 throw new AppError_1.default(http_status_1.UNAUTHORIZED, 'You have no access to this route');
             }
-            req.user = decoded;
+            req.user = decodedToken; // req.user now has a 'role' property
             next();
         });
     }));

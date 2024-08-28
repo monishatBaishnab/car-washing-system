@@ -12,7 +12,7 @@ router.get('/availability', SlotControllers.fetchAvailableSlot);
 
 router.post(
   '/',
-  auth(USER_ROLE.admin as TUserRole),
+  auth(),
   validateRequest(SlotValidations.createSlotValidation),
   SlotControllers.createSlot,
 );

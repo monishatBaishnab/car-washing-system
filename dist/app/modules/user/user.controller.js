@@ -23,14 +23,32 @@ const createUser = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, voi
         success: true,
         statusCode: http_status_1.OK,
         message: 'User registered successfully',
-        data: newUser,
+        data: { token: newUser },
+    });
+}));
+const createAdmin = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
+    const id = (_a = req === null || req === void 0 ? void 0 : req.params) === null || _a === void 0 ? void 0 : _a.userId;
+    console.log(id);
+    const result = yield user_services_1.UserServices.createAdminIntoDB(id);
+    (0, sendResponse_1.default)(res, {
+        success: true,
+        statusCode: http_status_1.OK,
+        message: 'Admin created successfully',
+        data: { token: result },
     });
 }));
 const loginUser = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const loggedInUserData = yield user_services_1.UserServices.loginUserWithEmailPassword(req.body);
-    (0, sendResponse_1.default)(res, Object.assign({ success: true, statusCode: http_status_1.OK, message: 'User logged in successfully' }, loggedInUserData));
+    (0, sendResponse_1.default)(res, {
+        success: true,
+        statusCode: http_status_1.OK,
+        message: 'User logged in successfully',
+        data: { token: loggedInUserData },
+    });
 }));
 exports.UserControllers = {
     createUser,
+    createAdmin,
     loginUser,
 };
