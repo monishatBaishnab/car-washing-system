@@ -14,6 +14,7 @@ interface DecodedToken extends JwtPayload {
 const auth = (...requiredRoles: TUserRole[]) => {
   return catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const token = req.headers.authorization?.split(' ')[1];
+
     if (!token) {
       throw new AppError(UNAUTHORIZED, 'You have no access to this route');
     }
@@ -30,7 +31,6 @@ const auth = (...requiredRoles: TUserRole[]) => {
         if (requiredRoles && !requiredRoles.includes(decodedToken.role)) {
           throw new AppError(UNAUTHORIZED, 'You have no access to this route');
         }
-
         req.user = decodedToken;  // req.user now has a 'role' property
         next();
       },

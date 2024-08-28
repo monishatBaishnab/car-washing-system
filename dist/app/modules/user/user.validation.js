@@ -11,7 +11,7 @@ const createUserValidationSchema = zod_1.z.object({
             invalid_type_error: 'Email must be a valid email address.',
         })
             .email(),
-        password: zod_1.z.string().optional(),
+        password: zod_1.z.string({ required_error: "Password is required." }),
         phone: zod_1.z.string({ required_error: 'Phone is required.' }),
         address: zod_1.z.string({ required_error: 'Address is required.' }),
     }),

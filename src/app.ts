@@ -6,7 +6,7 @@ import { appRouter } from './app/routes';
 
 const app = express();
 
-app.use(cors());
+app.use(cors({ origin: ['http://localhost:5173'], credentials: true }));
 app.use(express.json());
 
 // Connects version 1 API routes

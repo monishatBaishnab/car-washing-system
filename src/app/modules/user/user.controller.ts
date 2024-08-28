@@ -5,7 +5,7 @@ import sendResponse from '../../utils/sendResponse';
 
 const createUser = catchAsync(async (req, res) => {
   const newUser = await UserServices.createUserIntoDB(req.body);
-
+  console.log(req.body);
   sendResponse(res, {
     success: true,
     statusCode: OK,

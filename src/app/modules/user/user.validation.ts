@@ -9,7 +9,7 @@ const createUserValidationSchema = z.object({
         invalid_type_error: 'Email must be a valid email address.',
       })
       .email(),
-    password: z.string().optional(),
+    password: z.string({required_error: "Password is required."}),
     phone: z.string({ required_error: 'Phone is required.' }),
     address: z.string({ required_error: 'Address is required.' }),
   }),

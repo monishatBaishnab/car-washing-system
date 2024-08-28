@@ -19,7 +19,9 @@ const createServiceIntoDB = (payload) => __awaiter(void 0, void 0, void 0, funct
     return result;
 });
 const fetchAllServiceFromDB = (query) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield service_model_1.default.find();
+    // const filterQuery =
+    console.log(query);
+    const result = yield service_model_1.default.find({ 'featured': query === null || query === void 0 ? void 0 : query.featured });
     return result;
 });
 const fetchSingleServiceFromDB = (id) => __awaiter(void 0, void 0, void 0, function* () {

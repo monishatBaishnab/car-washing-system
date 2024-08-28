@@ -6,10 +6,11 @@ import auth from '../../middlewares/auth';
 import { USER_ROLE } from './user.constant';
 import { TUserRole } from './user.interface';
 
+
 const router = Router();
 
 router.post(
-  '/signup',
+  '/register',
   validateRequest(UserValidations.createUserValidationSchema),
   UserControllers.createUser,
 );

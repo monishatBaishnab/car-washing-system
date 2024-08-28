@@ -8,11 +8,17 @@ import jwt from 'jsonwebtoken';
 import { USER_ROLE } from './user.constant';
 import { createToken } from '../../utils/createToken';
 
+
+type TPayload = {
+  file: { name: string; type: string; size: number; path: string };
+};
+
 const createUserIntoDB = async (payload: TUser) => {
   const userData = {
     ...payload,
     role: USER_ROLE.user,
   };
+
   const newUser = await User.create(userData);
   let userToken;
   if (newUser) {

@@ -26,6 +26,13 @@ router.put(
   ServiceControllers.updateService,
 );
 
+// router.put(
+//   '/:id/featured-course',
+//   auth(USER_ROLE.admin as TUserRole),
+//   validateRequest(ServiceValidations.updateServiceValidation),
+//   ServiceControllers.updateService,
+// );
+
 router.delete(
   '/:id',
   auth(USER_ROLE.admin as TUserRole),

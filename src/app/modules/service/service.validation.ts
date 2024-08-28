@@ -6,6 +6,9 @@ const createServiceValidation = z.object({
     description: z.string(),
     duration: z.number(),
     price: z.number(),
+    image: z.string(),
+    rating: z.number().optional(),
+    featured: z.boolean().optional(),
     isDeleted: z.boolean().optional(),
   }),
 });
@@ -16,6 +19,9 @@ const updateServiceValidation = z.object({
     description: z.string().optional(),
     duration: z.number().optional(),
     price: z.number().optional(),
+    image: z.string().optional(),
+    rating: z.number().optional(),
+    featured: z.boolean().optional(),
     isDeleted: z.boolean().optional(),
   }),
 });
