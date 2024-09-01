@@ -18,6 +18,7 @@ const AppError_1 = __importDefault(require("../../errors/AppError"));
 const service_model_1 = __importDefault(require("../service/service.model"));
 const slot_model_1 = __importDefault(require("./slot.model"));
 const slot_utils_1 = require("./slot.utils");
+const dateValidator_1 = require("../../utils/dateValidator");
 const fetchAvailableSlotFromDB = (query) => __awaiter(void 0, void 0, void 0, function* () {
     const queryObj = { isBooked: 'available' };
     const { date, serviceId } = query;
@@ -32,7 +33,15 @@ const fetchAvailableSlotFromDB = (query) => __awaiter(void 0, void 0, void 0, fu
 });
 const createSlotIntoDB = (slotData) => __awaiter(void 0, void 0, void 0, function* () {
     const serviceExists = yield service_model_1.default.findById(slotData.service);
-    const existingSlots = yield slot_model_1.default.find({ date: slotData === null || slotData === void 0 ? void 0 : slotData.date });
+    const existingSlots = yield slot_model_1.default.find({
+        date: slotData === null || slotData === void 0 ? void 0 : slotData.date,
+        service: slotData.service,
+    });
+    const isValidDate = (0, dateValidator_1.dateValidator)(slotData.date);
+    console.log(isValidDate);
+    if (!isValidDate) {
+        throw new AppError_1.default(http_status_1.NOT_FOUND, 'The date is invalid. It cannot be a past date.');
+    }
     if (!serviceExists) {
         throw new AppError_1.default(http_status_1.NOT_FOUND, 'Service not found.');
     }

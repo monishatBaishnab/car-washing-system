@@ -5,6 +5,7 @@ import { TSlot } from './slot.interface';
 import Slot from './slot.model';
 import { createTimeSlots } from './slot.utils';
 import { populate } from 'dotenv';
+import { dateValidator } from '../../utils/dateValidator';
 
 const fetchAvailableSlotFromDB = async (query: Record<string, unknown>) => {
   const queryObj: Record<string, unknown> = { isBooked: 'available' };
@@ -24,7 +25,20 @@ const fetchAvailableSlotFromDB = async (query: Record<string, unknown>) => {
 
 const createSlotIntoDB = async (slotData: TSlot) => {
   const serviceExists = await Service.findById(slotData.service);
-  const existingSlots = await Slot.find({ date: slotData?.date });
+  const existingSlots = await Slot.find({
+    date: slotData?.date,
+    service: slotData.service,
+  });
+
+  const isValidDate = dateValidator(slotData.date);
+  console.log(isValidDate);
+
+  if (!isValidDate) {
+    throw new AppError(
+      NOT_FOUND,
+      'The date is invalid. It cannot be a past date.',
+    );
+  }
 
   if (!serviceExists) {
     throw new AppError(NOT_FOUND, 'Service not found.');
