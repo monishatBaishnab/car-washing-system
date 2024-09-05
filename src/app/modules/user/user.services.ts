@@ -8,9 +8,10 @@ import jwt from 'jsonwebtoken';
 import { USER_ROLE } from './user.constant';
 import { createToken } from '../../utils/createToken';
 
+const findUserInfoFromDB = async (email: string) => {
+  const userInfo = await User.findOne({ email }).select('-password');
 
-type TPayload = {
-  file: { name: string; type: string; size: number; path: string };
+  return userInfo;
 };
 
 const createUserIntoDB = async (payload: TUser) => {
@@ -79,6 +80,7 @@ const loginUserWithEmailPassword = async (payload: Partial<TUser>) => {
 };
 
 export const UserServices = {
+  findUserInfoFromDB,
   createUserIntoDB,
   createAdminIntoDB,
   loginUserWithEmailPassword,

@@ -27,27 +27,33 @@ exports.BookingServices = void 0;
 const mongoose_1 = __importDefault(require("mongoose"));
 const service_model_1 = __importDefault(require("../service/service.model"));
 const slot_model_1 = __importDefault(require("../slot/slot.model"));
-const user_model_1 = __importDefault(require("../user/user.model"));
 const booking_model_1 = __importDefault(require("./booking.model"));
 const AppError_1 = __importDefault(require("../../errors/AppError"));
 const http_status_1 = require("http-status");
+const payment_utils_1 = require("../payment/payment.utils");
+const uuid_1 = require("uuid");
 const fetchAllBookingFromDB = (query) => __awaiter(void 0, void 0, void 0, function* () {
     // Populate and return the newly created booking.
-    const bookings = yield booking_model_1.default.find()
-        .populate('service')
-        .populate('slot')
-        .populate({ path: 'customer', select: '-password' });
+    const bookings = yield booking_model_1.default.find().populate('service').populate('slot');
     return bookings;
 });
-const createBookingIntoDB = (bookingData, customerData) => __awaiter(void 0, void 0, void 0, function* () {
+const fetchMyBookingFromDB = (query) => __awaiter(void 0, void 0, void 0, function* () {
+    // Populate and return the newly created booking.
+    const bookings = yield booking_model_1.default.find({ 'customer.email': query === null || query === void 0 ? void 0 : query.email })
+        .populate('service')
+        .populate('slot');
+    return bookings;
+});
+const createBookingIntoDB = (bookingData) => __awaiter(void 0, void 0, void 0, function* () {
     const { serviceId, slotId } = bookingData, rest = __rest(bookingData, ["serviceId", "slotId"]);
-    const customer = customerData === null || customerData === void 0 ? void 0 : customerData.userId;
-    const newBookingData = Object.assign(Object.assign({}, rest), { slot: slotId, service: serviceId, customer });
-    // Validate customer
-    const existsCustomer = yield user_model_1.default.findById(customer);
-    if (!existsCustomer) {
-        throw new AppError_1.default(http_status_1.NOT_FOUND, 'Customer does not exist.');
-    }
+    const customer = bookingData === null || bookingData === void 0 ? void 0 : bookingData.customer;
+    const transactionId = (0, uuid_1.v4)();
+    const newBookingData = Object.assign(Object.assign({}, rest), { slot: slotId, service: serviceId, transactionId });
+    // // Validate customer
+    // const existsCustomer = await User.find(customer.email);
+    // if (!existsCustomer) {
+    //   throw new AppError(NOT_FOUND, 'Customer does not exist.');
+    // }
     // Validate slot
     const existsSlot = yield slot_model_1.default.findById(slotId);
     if (!existsSlot) {
@@ -75,15 +81,10 @@ const createBookingIntoDB = (bookingData, customerData) => __awaiter(void 0, voi
         if (!updateSlotToBooked) {
             throw new AppError_1.default(http_status_1.SERVICE_UNAVAILABLE, 'Unable to update the slot status to booked.');
         }
-        // Populate and return the newly created booking.
-        const booking = yield booking_model_1.default.findById(newBooking[0]._id)
-            .populate('service')
-            .populate('slot')
-            .populate({ path: 'customer', select: '-password' })
-            .session(session);
+        const paymentInfo = yield (0, payment_utils_1.initialPayment)(Object.assign(Object.assign({}, customer), { amount: existsService.price, transactionId }));
         //Commit session
         yield session.commitTransaction();
-        return booking;
+        return paymentInfo;
     }
     catch (error) {
         // Abort session if any error found
@@ -97,5 +98,6 @@ const createBookingIntoDB = (bookingData, customerData) => __awaiter(void 0, voi
 });
 exports.BookingServices = {
     fetchAllBookingFromDB,
+    fetchMyBookingFromDB,
     createBookingIntoDB,
 };

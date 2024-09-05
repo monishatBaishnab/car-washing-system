@@ -1,34 +1,45 @@
 import { Types } from 'mongoose';
 
-type TVehicle =
-  | 'car'
-  | 'truck'
-  | 'SUV'
-  | 'van'
-  | 'motorcycle'
-  | 'bus'
-  | 'electricVehicle'
-  | 'hybridVehicle'
-  | 'bicycle'
-  | 'tractor';
+// type TVehicle =
+//   | 'car'
+//   | 'truck'
+//   | 'SUV'
+//   | 'van'
+//   | 'motorcycle'
+//   | 'bus'
+//   | 'electricVehicle'
+//   | 'hybridVehicle'
+//   | 'bicycle'
+//   | 'tractor';
+
+export type TCustomer = {
+  name: string;
+  email: string;
+  mobile: string;
+  address: string;
+};
 
 export type TBooking = {
-  customer: Types.ObjectId;
+  customer: TCustomer;
   service: Types.ObjectId;
   slot: Types.ObjectId;
-  vehicleType: TVehicle;
+  vehicleType: string;
   vehicleBrand: string;
   vehicleModel: string;
   manufacturingYear: number;
   registrationPlate: string;
+  transactionId: string;
+  paymentStatus: 'pending' | 'completed' | 'failed';
 };
 export type TBookingData = {
-  customer: Types.ObjectId;
+  customer: TCustomer;
   serviceId: Types.ObjectId;
   slotId: Types.ObjectId;
-  vehicleType: TVehicle;
+  vehicleType: string;
   vehicleBrand: string;
   vehicleModel: string;
   manufacturingYear: number;
   registrationPlate: string;
+  transactionId: string;
+  paymentStatus: 'pending' | 'completed' | 'failed';
 };

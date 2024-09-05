@@ -14,11 +14,19 @@ const fetchAllBooking = catchAsync(async (req, res) => {
   });
 });
 
+const fetchMyBooking = catchAsync(async (req, res) => {
+  const bookings = await BookingServices.fetchMyBookingFromDB(req.query);
+
+  sendResponse(res, {
+    success: true,
+    message: 'My bookings retrieved successfully',
+    statusCode: OK,
+    data: bookings,
+  });
+});
+
 const createBooking = catchAsync(async (req, res) => {
-  const newBooking = await BookingServices.createBookingIntoDB(
-    req.body,
-    req.user,
-  );
+  const newBooking = await BookingServices.createBookingIntoDB(req.body);
 
   sendResponse(res, {
     success: true,
@@ -30,5 +38,6 @@ const createBooking = catchAsync(async (req, res) => {
 
 export const BookingControllers = {
   fetchAllBooking,
+  fetchMyBooking,
   createBooking,
 };

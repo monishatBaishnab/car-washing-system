@@ -1,7 +1,6 @@
 import mongoose from 'mongoose';
 import Service from '../service/service.model';
 import Slot from '../slot/slot.model';
-import User from '../user/user.model';
 import { TBookingData } from './booking.interface';
 import Booking from './booking.model';
 import AppError from '../../errors/AppError';
@@ -11,37 +10,40 @@ import {
   NOT_FOUND,
   SERVICE_UNAVAILABLE,
 } from 'http-status';
-import { JwtPayload } from 'jsonwebtoken';
+import { initialPayment } from '../payment/payment.utils';
+import { v4 as uuidv4 } from 'uuid';
 
 const fetchAllBookingFromDB = async (query: Record<string, unknown>) => {
   // Populate and return the newly created booking.
-  const bookings = await Booking.find()
+  const bookings = await Booking.find().populate('service').populate('slot');
+
+  return bookings;
+};
+const fetchMyBookingFromDB = async (query: Record<string, unknown>) => {
+  // Populate and return the newly created booking.
+  const bookings = await Booking.find({ 'customer.email': query?.email })
     .populate('service')
-    .populate('slot')
-    .populate({ path: 'customer', select: '-password' });
+    .populate('slot');
 
   return bookings;
 };
 
-const createBookingIntoDB = async (
-  bookingData: TBookingData,
-  customerData: JwtPayload,
-) => {
+const createBookingIntoDB = async (bookingData: TBookingData) => {
   const { serviceId, slotId, ...rest } = bookingData;
-  const customer = customerData?.userId;
-
+  const customer = bookingData?.customer;
+  const transactionId: string = uuidv4();
   const newBookingData = {
     ...rest,
     slot: slotId,
     service: serviceId,
-    customer,
+    transactionId,
   };
 
-  // Validate customer
-  const existsCustomer = await User.findById(customer);
-  if (!existsCustomer) {
-    throw new AppError(NOT_FOUND, 'Customer does not exist.');
-  }
+  // // Validate customer
+  // const existsCustomer = await User.find(customer.email);
+  // if (!existsCustomer) {
+  //   throw new AppError(NOT_FOUND, 'Customer does not exist.');
+  // }
 
   // Validate slot
   const existsSlot = await Slot.findById(slotId);
@@ -84,17 +86,14 @@ const createBookingIntoDB = async (
         'Unable to update the slot status to booked.',
       );
     }
-
-    // Populate and return the newly created booking.
-    const booking = await Booking.findById(newBooking[0]._id)
-      .populate('service')
-      .populate('slot')
-      .populate({ path: 'customer', select: '-password' })
-      .session(session);
-
+    const paymentInfo = await initialPayment({
+      ...customer,
+      amount: existsService.price,
+      transactionId,
+    });
     //Commit session
     await session.commitTransaction();
-    return booking;
+    return paymentInfo;
   } catch (error: any) {
     // Abort session if any error found
     await session.abortTransaction();
@@ -107,5 +106,6 @@ const createBookingIntoDB = async (
 
 export const BookingServices = {
   fetchAllBookingFromDB,
+  fetchMyBookingFromDB,
   createBookingIntoDB,
 };

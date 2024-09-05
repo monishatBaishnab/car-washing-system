@@ -3,9 +3,20 @@ import catchAsync from '../../utils/catchAsync';
 import { UserServices } from './user.services';
 import sendResponse from '../../utils/sendResponse';
 
+const fetchUserInfo = catchAsync(async (req, res) => {
+  const user = await UserServices.findUserInfoFromDB(req.params.email);
+
+  sendResponse(res, {
+    success: true,
+    statusCode: OK,
+    message: 'User info retrieved successfully',
+    data: user,
+  });
+});
+
 const createUser = catchAsync(async (req, res) => {
   const newUser = await UserServices.createUserIntoDB(req.body);
-  console.log(req.body);
+
   sendResponse(res, {
     success: true,
     statusCode: OK,
@@ -40,6 +51,7 @@ const loginUser = catchAsync(async (req, res) => {
 });
 
 export const UserControllers = {
+  fetchUserInfo,
   createUser,
   createAdmin,
   loginUser,

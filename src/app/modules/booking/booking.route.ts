@@ -14,6 +14,12 @@ router.get(
   BookingControllers.fetchAllBooking,
 );
 
+router.get(
+  '/my-bookings',
+  auth(USER_ROLE.user as TUserRole),
+  BookingControllers.fetchMyBooking,
+);
+
 router.post(
   '/',
   auth(USER_ROLE.user as TUserRole),

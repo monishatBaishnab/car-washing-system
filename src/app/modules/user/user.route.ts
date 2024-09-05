@@ -6,8 +6,13 @@ import auth from '../../middlewares/auth';
 import { USER_ROLE } from './user.constant';
 import { TUserRole } from './user.interface';
 
-
 const router = Router();
+
+router.get(
+  '/:email',
+  auth(USER_ROLE.admin as TUserRole, USER_ROLE.user as TUserRole),
+  UserControllers.fetchUserInfo,
+);
 
 router.post(
   '/register',

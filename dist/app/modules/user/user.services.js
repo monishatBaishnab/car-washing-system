@@ -32,6 +32,10 @@ const bcrypt_1 = __importDefault(require("bcrypt"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const user_constant_1 = require("./user.constant");
 const createToken_1 = require("../../utils/createToken");
+const findUserInfoFromDB = (email) => __awaiter(void 0, void 0, void 0, function* () {
+    const userInfo = yield user_model_1.default.findOne({ email }).select('-password');
+    return userInfo;
+});
 const createUserIntoDB = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     const userData = Object.assign(Object.assign({}, payload), { role: user_constant_1.USER_ROLE.user });
     const newUser = yield user_model_1.default.create(userData);
@@ -80,6 +84,7 @@ const loginUserWithEmailPassword = (payload) => __awaiter(void 0, void 0, void 0
     return token;
 });
 exports.UserServices = {
+    findUserInfoFromDB,
     createUserIntoDB,
     createAdminIntoDB,
     loginUserWithEmailPassword,
