@@ -15,6 +15,12 @@ router.get(
 );
 
 router.get(
+  '/upcoming',
+  auth(USER_ROLE.user as TUserRole),
+  BookingControllers.fetchUpcomingBooking,
+);
+
+router.get(
   '/my-bookings',
   auth(USER_ROLE.user as TUserRole),
   BookingControllers.fetchMyBooking,

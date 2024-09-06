@@ -12,6 +12,7 @@ import {
 } from 'http-status';
 import { initialPayment } from '../payment/payment.utils';
 import { v4 as uuidv4 } from 'uuid';
+import { TSlot } from '../slot/slot.interface';
 
 const fetchAllBookingFromDB = async (query: Record<string, unknown>) => {
   // Populate and return the newly created booking.
@@ -19,9 +20,29 @@ const fetchAllBookingFromDB = async (query: Record<string, unknown>) => {
 
   return bookings;
 };
-const fetchMyBookingFromDB = async (query: Record<string, unknown>) => {
+
+const fetchUpcomingBookingFromDB = async (email: string) => {
+  const currentTime = new Date();
+
+  const bookings = await Booking.find({
+    'customer.email': email,
+  })
+    .populate({
+      path: 'slot',
+      select: 'date',
+    })
+    .populate('service');
+
+  const upcomingBookings = bookings.filter((booking) => {
+    return booking.slot && new Date((booking.slot as TSlot).date) > currentTime;
+  });
+
+  return upcomingBookings;
+};
+
+const fetchMyBookingFromDB = async (email: string) => {
   // Populate and return the newly created booking.
-  const bookings = await Booking.find({ 'customer.email': query?.email })
+  const bookings = await Booking.find({ 'customer.email': email })
     .populate('service')
     .populate('slot');
 
@@ -106,6 +127,7 @@ const createBookingIntoDB = async (bookingData: TBookingData) => {
 
 export const BookingServices = {
   fetchAllBookingFromDB,
+  fetchUpcomingBookingFromDB,
   fetchMyBookingFromDB,
   createBookingIntoDB,
 };

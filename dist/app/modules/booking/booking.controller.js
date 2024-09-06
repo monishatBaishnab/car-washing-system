@@ -26,8 +26,19 @@ const fetchAllBooking = (0, catchAsync_1.default)((req, res) => __awaiter(void 0
         data: bookings,
     });
 }));
+const fetchUpcomingBooking = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const bookings = yield booking_services_1.BookingServices.fetchUpcomingBookingFromDB(req.user.email);
+    console.log(bookings);
+    console.log(req.user.email);
+    (0, sendResponse_1.default)(res, {
+        success: true,
+        message: 'Upcoming bookings retrieved successfully',
+        statusCode: http_status_1.OK,
+        data: bookings,
+    });
+}));
 const fetchMyBooking = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const bookings = yield booking_services_1.BookingServices.fetchMyBookingFromDB(req.query);
+    const bookings = yield booking_services_1.BookingServices.fetchMyBookingFromDB(req.user.email);
     (0, sendResponse_1.default)(res, {
         success: true,
         message: 'My bookings retrieved successfully',
@@ -46,6 +57,7 @@ const createBooking = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, 
 }));
 exports.BookingControllers = {
     fetchAllBooking,
+    fetchUpcomingBooking,
     fetchMyBooking,
     createBooking,
 };

@@ -37,9 +37,24 @@ const fetchAllBookingFromDB = (query) => __awaiter(void 0, void 0, void 0, funct
     const bookings = yield booking_model_1.default.find().populate('service').populate('slot');
     return bookings;
 });
-const fetchMyBookingFromDB = (query) => __awaiter(void 0, void 0, void 0, function* () {
+const fetchUpcomingBookingFromDB = (email) => __awaiter(void 0, void 0, void 0, function* () {
+    const currentTime = new Date();
+    const bookings = yield booking_model_1.default.find({
+        'customer.email': email,
+    })
+        .populate({
+        path: 'slot',
+        select: 'date',
+    })
+        .populate('service');
+    const upcomingBookings = bookings.filter((booking) => {
+        return booking.slot && new Date(booking.slot.date) > currentTime;
+    });
+    return upcomingBookings;
+});
+const fetchMyBookingFromDB = (email) => __awaiter(void 0, void 0, void 0, function* () {
     // Populate and return the newly created booking.
-    const bookings = yield booking_model_1.default.find({ 'customer.email': query === null || query === void 0 ? void 0 : query.email })
+    const bookings = yield booking_model_1.default.find({ 'customer.email': email })
         .populate('service')
         .populate('slot');
     return bookings;
@@ -98,6 +113,7 @@ const createBookingIntoDB = (bookingData) => __awaiter(void 0, void 0, void 0, f
 });
 exports.BookingServices = {
     fetchAllBookingFromDB,
+    fetchUpcomingBookingFromDB,
     fetchMyBookingFromDB,
     createBookingIntoDB,
 };

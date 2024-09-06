@@ -13,9 +13,22 @@ const fetchAllBooking = catchAsync(async (req, res) => {
     data: bookings,
   });
 });
+const fetchUpcomingBooking = catchAsync(async (req, res) => {
+  const bookings = await BookingServices.fetchUpcomingBookingFromDB(
+    req.user.email,
+  );
+  console.log(bookings);
+  console.log(req.user.email);
+  sendResponse(res, {
+    success: true,
+    message: 'Upcoming bookings retrieved successfully',
+    statusCode: OK,
+    data: bookings,
+  });
+});
 
 const fetchMyBooking = catchAsync(async (req, res) => {
-  const bookings = await BookingServices.fetchMyBookingFromDB(req.query);
+  const bookings = await BookingServices.fetchMyBookingFromDB(req.user.email);
 
   sendResponse(res, {
     success: true,
@@ -38,6 +51,7 @@ const createBooking = catchAsync(async (req, res) => {
 
 export const BookingControllers = {
   fetchAllBooking,
+  fetchUpcomingBooking,
   fetchMyBooking,
   createBooking,
 };

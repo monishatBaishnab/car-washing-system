@@ -1,4 +1,5 @@
 import { Types } from 'mongoose';
+import { TSlot } from '../slot/slot.interface';
 
 // type TVehicle =
 //   | 'car'
@@ -22,7 +23,7 @@ export type TCustomer = {
 export type TBooking = {
   customer: TCustomer;
   service: Types.ObjectId;
-  slot: Types.ObjectId;
+  slot: Types.ObjectId | TSlot;
   vehicleType: string;
   vehicleBrand: string;
   vehicleModel: string;

@@ -19,8 +19,9 @@ const createUserIntoDB = async (payload: TUser) => {
     ...payload,
     role: USER_ROLE.user,
   };
-
+  
   const newUser = await User.create(userData);
+
   let userToken;
   if (newUser) {
     userToken = createToken(newUser);
