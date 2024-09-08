@@ -14,5 +14,6 @@ const router = (0, express_1.Router)();
 router.get('/:email', (0, auth_1.default)(user_constant_1.USER_ROLE.admin, user_constant_1.USER_ROLE.user), user_controller_1.UserControllers.fetchUserInfo);
 router.post('/register', (0, validateRequest_1.default)(user_validation_1.UserValidations.createUserValidationSchema), user_controller_1.UserControllers.createUser);
 router.patch('/create-admin/:userId', (0, auth_1.default)(user_constant_1.USER_ROLE.admin), user_controller_1.UserControllers.createAdmin);
+router.patch('/update-profile/:userId', (0, auth_1.default)(user_constant_1.USER_ROLE.admin, user_constant_1.USER_ROLE.user), user_controller_1.UserControllers.updateProfile);
 router.post('/login', (0, validateRequest_1.default)(user_validation_1.UserValidations.loginUserValidationSchema), user_controller_1.UserControllers.loginUser);
 exports.UserRoutes = router;

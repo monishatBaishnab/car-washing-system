@@ -19,7 +19,7 @@ const createUserIntoDB = async (payload: TUser) => {
     ...payload,
     role: USER_ROLE.user,
   };
-  
+
   const newUser = await User.create(userData);
 
   let userToken;
@@ -44,6 +44,24 @@ const createAdminIntoDB = async (id: string) => {
     userToken = createToken(updatedUser);
   }
   return userToken;
+};
+
+const updateProfileIntoDB = async (
+  payload: Record<string, string>,
+  role: string,
+  id: string,
+) => {
+  const existUser = await User.findById(id);
+  if (!existUser) {
+    throw new AppError(NOT_FOUND, 'User does not exist.');
+  }
+  const updatedUser = await User.findByIdAndUpdate(
+    id,
+    { ...payload, role },
+    { new: true },
+  );
+
+  return updatedUser;
 };
 
 const loginUserWithEmailPassword = async (payload: Partial<TUser>) => {
@@ -83,6 +101,7 @@ const loginUserWithEmailPassword = async (payload: Partial<TUser>) => {
 export const UserServices = {
   findUserInfoFromDB,
   createUserIntoDB,
+  updateProfileIntoDB,
   createAdminIntoDB,
   loginUserWithEmailPassword,
 };

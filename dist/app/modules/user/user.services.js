@@ -57,6 +57,14 @@ const createAdminIntoDB = (id) => __awaiter(void 0, void 0, void 0, function* ()
     }
     return userToken;
 });
+const updateProfileIntoDB = (payload, role, id) => __awaiter(void 0, void 0, void 0, function* () {
+    const existUser = yield user_model_1.default.findById(id);
+    if (!existUser) {
+        throw new AppError_1.default(http_status_1.NOT_FOUND, 'User does not exist.');
+    }
+    const updatedUser = yield user_model_1.default.findByIdAndUpdate(id, Object.assign(Object.assign({}, payload), { role }), { new: true });
+    return updatedUser;
+});
 const loginUserWithEmailPassword = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     // Find user by email
     const existUser = yield user_model_1.default.findOne({ email: payload === null || payload === void 0 ? void 0 : payload.email });
@@ -86,6 +94,7 @@ const loginUserWithEmailPassword = (payload) => __awaiter(void 0, void 0, void 0
 exports.UserServices = {
     findUserInfoFromDB,
     createUserIntoDB,
+    updateProfileIntoDB,
     createAdminIntoDB,
     loginUserWithEmailPassword,
 };

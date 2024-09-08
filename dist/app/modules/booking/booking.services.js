@@ -42,10 +42,7 @@ const fetchUpcomingBookingFromDB = (email) => __awaiter(void 0, void 0, void 0, 
     const bookings = yield booking_model_1.default.find({
         'customer.email': email,
     })
-        .populate({
-        path: 'slot',
-        select: 'date',
-    })
+        .populate('slot')
         .populate('service');
     const upcomingBookings = bookings.filter((booking) => {
         return booking.slot && new Date(booking.slot.date) > currentTime;

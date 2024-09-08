@@ -47,6 +47,17 @@ const createAdmin = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, vo
         data: { token: result },
     });
 }));
+const updateProfile = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
+    const id = (_a = req === null || req === void 0 ? void 0 : req.params) === null || _a === void 0 ? void 0 : _a.userId;
+    const result = yield user_services_1.UserServices.updateProfileIntoDB(req.body, req.user.role, id);
+    (0, sendResponse_1.default)(res, {
+        success: true,
+        statusCode: http_status_1.OK,
+        message: 'Profile update successfully',
+        data: result,
+    });
+}));
 const loginUser = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const loggedInUserData = yield user_services_1.UserServices.loginUserWithEmailPassword(req.body);
     (0, sendResponse_1.default)(res, {
@@ -59,6 +70,7 @@ const loginUser = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void
 exports.UserControllers = {
     fetchUserInfo,
     createUser,
+    updateProfile,
     createAdmin,
     loginUser,
 };

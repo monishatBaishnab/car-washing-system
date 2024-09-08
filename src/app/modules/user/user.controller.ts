@@ -37,6 +37,21 @@ const createAdmin = catchAsync(async (req, res) => {
   });
 });
 
+const updateProfile = catchAsync(async (req, res) => {
+  const id = req?.params?.userId;
+  const result = await UserServices.updateProfileIntoDB(
+    req.body,
+    req.user.role,
+    id,
+  );
+  sendResponse(res, {
+    success: true,
+    statusCode: OK,
+    message: 'Profile update successfully',
+    data: result,
+  });
+});
+
 const loginUser = catchAsync(async (req, res) => {
   const loggedInUserData = await UserServices.loginUserWithEmailPassword(
     req.body,
@@ -53,6 +68,7 @@ const loginUser = catchAsync(async (req, res) => {
 export const UserControllers = {
   fetchUserInfo,
   createUser,
+  updateProfile,
   createAdmin,
   loginUser,
 };

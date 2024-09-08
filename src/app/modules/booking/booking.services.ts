@@ -27,10 +27,7 @@ const fetchUpcomingBookingFromDB = async (email: string) => {
   const bookings = await Booking.find({
     'customer.email': email,
   })
-    .populate({
-      path: 'slot',
-      select: 'date',
-    })
+    .populate('slot')
     .populate('service');
 
   const upcomingBookings = bookings.filter((booking) => {

@@ -25,6 +25,11 @@ router.patch(
   auth(USER_ROLE.admin as TUserRole),
   UserControllers.createAdmin,
 );
+router.patch(
+  '/update-profile/:userId',
+  auth(USER_ROLE.admin as TUserRole, USER_ROLE.user as TUserRole),
+  UserControllers.updateProfile,
+);
 
 router.post(
   '/login',
