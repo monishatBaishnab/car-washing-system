@@ -55,9 +55,21 @@ const createBooking = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, 
         data: newBooking,
     });
 }));
+const updateBooking = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
+    const { id } = (_a = req.params) !== null && _a !== void 0 ? _a : {};
+    const updatedBooking = yield booking_services_1.BookingServices.updateBookingIntoDB(id, req.body);
+    (0, sendResponse_1.default)(res, {
+        success: true,
+        message: 'Booking updated successful',
+        statusCode: http_status_1.OK,
+        data: updatedBooking,
+    });
+}));
 exports.BookingControllers = {
     fetchAllBooking,
     fetchUpcomingBooking,
     fetchMyBooking,
     createBooking,
+    updateBooking,
 };

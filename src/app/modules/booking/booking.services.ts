@@ -15,8 +15,14 @@ import { v4 as uuidv4 } from 'uuid';
 import { TSlot } from '../slot/slot.interface';
 
 const fetchAllBookingFromDB = async (query: Record<string, unknown>) => {
-  // Populate and return the newly created booking.
-  const bookings = await Booking.find().populate('service').populate('slot');
+  const limit = query?.limit ?? '';
+  const sort = query?.sort ?? '-updatedAt';
+  const limitQuery = Booking.find().limit(Number(limit));
+  const bookings = await limitQuery
+    .find()
+    .populate('service')
+    .populate('slot')
+    .sort(sort as string);
 
   return bookings;
 };
@@ -57,13 +63,6 @@ const createBookingIntoDB = async (bookingData: TBookingData) => {
     transactionId,
   };
 
-  // // Validate customer
-  // const existsCustomer = await User.find(customer.email);
-  // if (!existsCustomer) {
-  //   throw new AppError(NOT_FOUND, 'Customer does not exist.');
-  // }
-
-  // Validate slot
   const existsSlot = await Slot.findById(slotId);
   if (!existsSlot) {
     throw new AppError(NOT_FOUND, 'Slot does not exist.');
@@ -122,9 +121,15 @@ const createBookingIntoDB = async (bookingData: TBookingData) => {
   }
 };
 
+const updateBookingIntoDB = async (payload: string, id: string) => {
+  const result = await Booking.findOneAndUpdate({ _id: id }, { payload });
+  return result;
+};
+
 export const BookingServices = {
   fetchAllBookingFromDB,
   fetchUpcomingBookingFromDB,
   fetchMyBookingFromDB,
   createBookingIntoDB,
+  updateBookingIntoDB
 };

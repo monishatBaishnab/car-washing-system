@@ -15,4 +15,5 @@ router.get('/', (0, auth_1.default)(user_constant_1.USER_ROLE.admin), booking_co
 router.get('/upcoming', (0, auth_1.default)(user_constant_1.USER_ROLE.user), booking_controller_1.BookingControllers.fetchUpcomingBooking);
 router.get('/my-bookings', (0, auth_1.default)(user_constant_1.USER_ROLE.user), booking_controller_1.BookingControllers.fetchMyBooking);
 router.post('/', (0, auth_1.default)(user_constant_1.USER_ROLE.user), (0, validateRequest_1.default)(booking_validation_1.BookingValidations.createBookingSchema), booking_controller_1.BookingControllers.createBooking);
+router.post('/:id', (0, auth_1.default)(user_constant_1.USER_ROLE.admin), booking_controller_1.BookingControllers.updateBooking);
 exports.BookingRoutes = router;

@@ -33,8 +33,15 @@ const http_status_1 = require("http-status");
 const payment_utils_1 = require("../payment/payment.utils");
 const uuid_1 = require("uuid");
 const fetchAllBookingFromDB = (query) => __awaiter(void 0, void 0, void 0, function* () {
-    // Populate and return the newly created booking.
-    const bookings = yield booking_model_1.default.find().populate('service').populate('slot');
+    var _a, _b;
+    const limit = (_a = query === null || query === void 0 ? void 0 : query.limit) !== null && _a !== void 0 ? _a : '';
+    const sort = (_b = query === null || query === void 0 ? void 0 : query.sort) !== null && _b !== void 0 ? _b : '-updatedAt';
+    const limitQuery = booking_model_1.default.find().limit(Number(limit));
+    const bookings = yield limitQuery
+        .find()
+        .populate('service')
+        .populate('slot')
+        .sort(sort);
     return bookings;
 });
 const fetchUpcomingBookingFromDB = (email) => __awaiter(void 0, void 0, void 0, function* () {
@@ -61,12 +68,6 @@ const createBookingIntoDB = (bookingData) => __awaiter(void 0, void 0, void 0, f
     const customer = bookingData === null || bookingData === void 0 ? void 0 : bookingData.customer;
     const transactionId = (0, uuid_1.v4)();
     const newBookingData = Object.assign(Object.assign({}, rest), { slot: slotId, service: serviceId, transactionId });
-    // // Validate customer
-    // const existsCustomer = await User.find(customer.email);
-    // if (!existsCustomer) {
-    //   throw new AppError(NOT_FOUND, 'Customer does not exist.');
-    // }
-    // Validate slot
     const existsSlot = yield slot_model_1.default.findById(slotId);
     if (!existsSlot) {
         throw new AppError_1.default(http_status_1.NOT_FOUND, 'Slot does not exist.');
@@ -108,9 +109,14 @@ const createBookingIntoDB = (bookingData) => __awaiter(void 0, void 0, void 0, f
         yield session.endSession();
     }
 });
+const updateBookingIntoDB = (payload, id) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield booking_model_1.default.findOneAndUpdate({ _id: id }, { payload });
+    return result;
+});
 exports.BookingServices = {
     fetchAllBookingFromDB,
     fetchUpcomingBookingFromDB,
     fetchMyBookingFromDB,
     createBookingIntoDB,
+    updateBookingIntoDB
 };

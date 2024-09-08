@@ -33,4 +33,10 @@ router.post(
   BookingControllers.createBooking,
 );
 
+router.post(
+  '/:id',
+  auth(USER_ROLE.admin as TUserRole),
+  BookingControllers.updateBooking,
+);
+
 export const BookingRoutes = router;
