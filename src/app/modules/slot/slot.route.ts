@@ -8,6 +8,11 @@ import auth from '../../middlewares/auth';
 
 const router = Router();
 
+router.get(
+  '/',
+  auth(USER_ROLE.admin as TUserRole),
+  SlotControllers.fetchAllSlot,
+);
 router.get('/availability', SlotControllers.fetchAvailableSlot);
 
 router.post(
@@ -15,6 +20,11 @@ router.post(
   auth(USER_ROLE.admin as TUserRole),
   validateRequest(SlotValidations.createSlotValidation),
   SlotControllers.createSlot,
+);
+router.patch(
+  '/:id',
+  auth(USER_ROLE.admin as TUserRole),
+  SlotControllers.updateSlot,
 );
 
 export const SlotRoutes = router;

@@ -13,6 +13,16 @@ const fetchAvailableSlot = catchAsync(async (req, res) => {
     data: availableSlot,
   });
 });
+const fetchAllSlot = catchAsync(async (req, res) => {
+  const slots = await SlotServices.fetchAllSlotFromDB(req.query);
+
+  sendResponse(res, {
+    success: true,
+    statusCode: OK,
+    message: 'Slots retrieved successfully',
+    data: slots,
+  });
+});
 
 const createSlot = catchAsync(async (req, res) => {
   const newSlot = await SlotServices.createSlotIntoDB(req.body);
@@ -25,7 +35,20 @@ const createSlot = catchAsync(async (req, res) => {
   });
 });
 
+const updateSlot = catchAsync(async (req, res) => {
+  const newSlot = await SlotServices.updateSlotIntoDB(req.params?.id, req.body);
+
+  sendResponse(res, {
+    success: true,
+    statusCode: OK,
+    message: 'Slots updated successfully',
+    data: newSlot,
+  });
+});
+
 export const SlotControllers = {
   fetchAvailableSlot,
+  fetchAllSlot,
+  updateSlot,
   createSlot,
 };

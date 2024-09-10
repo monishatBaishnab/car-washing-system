@@ -1,4 +1,27 @@
 "use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -13,7 +36,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SlotServices = void 0;
-const http_status_1 = require("http-status");
+const http_status_1 = __importStar(require("http-status"));
 const AppError_1 = __importDefault(require("../../errors/AppError"));
 const service_model_1 = __importDefault(require("../service/service.model"));
 const slot_model_1 = __importDefault(require("./slot.model"));
@@ -29,6 +52,10 @@ const fetchAvailableSlotFromDB = (query) => __awaiter(void 0, void 0, void 0, fu
         queryObj.service = serviceId;
     }
     const result = yield slot_model_1.default.find(queryObj).populate('service');
+    return result;
+});
+const fetchAllSlotFromDB = (query) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield slot_model_1.default.find().populate('service').sort('-createdAt');
     return result;
 });
 const createSlotIntoDB = (slotData) => __awaiter(void 0, void 0, void 0, function* () {
@@ -63,7 +90,22 @@ const createSlotIntoDB = (slotData) => __awaiter(void 0, void 0, void 0, functio
     const newSlots = yield slot_model_1.default.insertMany(slotsData);
     return newSlots;
 });
+const updateSlotIntoDB = (id, payload) => __awaiter(void 0, void 0, void 0, function* () {
+    const existSlot = yield slot_model_1.default.findById(id);
+    if (!existSlot) {
+        throw new AppError_1.default(http_status_1.default.NOT_FOUND, 'Slot not found.');
+    }
+    if ((existSlot === null || existSlot === void 0 ? void 0 : existSlot.isBooked) === 'booked') {
+        throw new AppError_1.default(http_status_1.default.BAD_REQUEST, 'Slot update Failed.');
+    }
+    const result = yield slot_model_1.default.findByIdAndUpdate(id, {
+        isBooked: payload.isBooked,
+    }, { new: true });
+    return result;
+});
 exports.SlotServices = {
     fetchAvailableSlotFromDB,
+    fetchAllSlotFromDB,
+    updateSlotIntoDB,
     createSlotIntoDB,
 };

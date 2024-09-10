@@ -1,4 +1,4 @@
-import { CONFLICT, NOT_FOUND } from 'http-status';
+import httpStatus, { CONFLICT, NOT_FOUND } from 'http-status';
 import AppError from '../../errors/AppError';
 import Service from '../service/service.model';
 import { TSlot } from './slot.interface';
@@ -19,6 +19,11 @@ const fetchAvailableSlotFromDB = async (query: Record<string, unknown>) => {
   }
 
   const result = await Slot.find(queryObj).populate('service');
+
+  return result;
+};
+const fetchAllSlotFromDB = async (query: Record<string, unknown>) => {
+  const result = await Slot.find().populate('service').sort('-createdAt');
 
   return result;
 };
@@ -75,7 +80,28 @@ const createSlotIntoDB = async (slotData: TSlot) => {
   return newSlots;
 };
 
+const updateSlotIntoDB = async (id: string, payload: Partial<TSlot>) => {
+  const existSlot = await Slot.findById(id);
+  if(!existSlot){
+    throw new AppError(httpStatus.NOT_FOUND, 'Slot not found.');
+  }
+  if (existSlot?.isBooked === 'booked') {
+    throw new AppError(httpStatus.BAD_REQUEST, 'Slot update Failed.');
+  }
+  const result = await Slot.findByIdAndUpdate(
+    id,
+    {
+      isBooked: payload.isBooked,
+    },
+    { new: true },
+  );
+
+  return result;
+};
+
 export const SlotServices = {
   fetchAvailableSlotFromDB,
+  fetchAllSlotFromDB,
+  updateSlotIntoDB,
   createSlotIntoDB,
 };
