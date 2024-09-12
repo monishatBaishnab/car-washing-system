@@ -48,7 +48,7 @@ const updateProfile = catchAsync(async (req, res) => {
     success: true,
     statusCode: OK,
     message: 'Profile update successfully',
-    data: result,
+    data: { token: result },
   });
 });
 

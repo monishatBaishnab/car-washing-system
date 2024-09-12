@@ -60,8 +60,11 @@ const updateProfileIntoDB = async (
     { ...payload, role },
     { new: true },
   );
-
-  return updatedUser;
+  let userToken;
+  if (updatedUser) {
+    userToken = createToken(updatedUser);
+  }
+  return userToken;
 };
 
 const loginUserWithEmailPassword = async (payload: Partial<TUser>) => {

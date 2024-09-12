@@ -63,7 +63,11 @@ const updateProfileIntoDB = (payload, role, id) => __awaiter(void 0, void 0, voi
         throw new AppError_1.default(http_status_1.NOT_FOUND, 'User does not exist.');
     }
     const updatedUser = yield user_model_1.default.findByIdAndUpdate(id, Object.assign(Object.assign({}, payload), { role }), { new: true });
-    return updatedUser;
+    let userToken;
+    if (updatedUser) {
+        userToken = (0, createToken_1.createToken)(updatedUser);
+    }
+    return userToken;
 });
 const loginUserWithEmailPassword = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     // Find user by email

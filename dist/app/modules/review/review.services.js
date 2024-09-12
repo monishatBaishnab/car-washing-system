@@ -15,11 +15,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.reviewServices = void 0;
 const http_status_1 = require("http-status");
 const AppError_1 = __importDefault(require("../../errors/AppError"));
-const user_model_1 = __importDefault(require("../user/user.model"));
 const review_model_1 = __importDefault(require("./review.model"));
+const booking_model_1 = __importDefault(require("../booking/booking.model"));
 const fetchReviewStateFromDB = () => __awaiter(void 0, void 0, void 0, function* () {
     // Calculate Total Completed Washes
-    const totalCompletedWashes = yield review_model_1.default.countDocuments();
+    const totalCompletedWashes = yield booking_model_1.default.countDocuments();
     // Calculate Total Positive Reviews (assuming rating is between 1 and 5 and positive is >= 4)
     const totalPositiveReviews = yield review_model_1.default.countDocuments({
         rating: { $gte: 4 },
@@ -47,7 +47,7 @@ const fetchAllReviewFromDB = (query) => __awaiter(void 0, void 0, void 0, functi
     return res;
 });
 const createReviewIntoDB = (reviewData) => __awaiter(void 0, void 0, void 0, function* () {
-    const existsUser = user_model_1.default.findById(reviewData === null || reviewData === void 0 ? void 0 : reviewData.user);
+    const existsUser = 19;
     if (!existsUser) {
         throw new AppError_1.default(http_status_1.NOT_FOUND, 'User not found!');
     }

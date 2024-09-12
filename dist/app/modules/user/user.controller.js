@@ -55,7 +55,7 @@ const updateProfile = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, 
         success: true,
         statusCode: http_status_1.OK,
         message: 'Profile update successfully',
-        data: result,
+        data: { token: result },
     });
 }));
 const loginUser = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {

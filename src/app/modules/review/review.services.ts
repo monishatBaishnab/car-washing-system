@@ -1,12 +1,12 @@
 import { NOT_FOUND } from 'http-status';
 import AppError from '../../errors/AppError';
-import User from '../user/user.model';
-import { TReview } from './review.interfaec';
+import { TReview } from './review.interface';
 import Review from './review.model';
+import Booking from '../booking/booking.model';
 
 const fetchReviewStateFromDB = async () => {
   // Calculate Total Completed Washes
-  const totalCompletedWashes = await Review.countDocuments();
+  const totalCompletedWashes = await Booking.countDocuments();
 
   // Calculate Total Positive Reviews (assuming rating is between 1 and 5 and positive is >= 4)
   const totalPositiveReviews = await Review.countDocuments({
@@ -40,7 +40,7 @@ const fetchAllReviewFromDB = async (query: Record<string, unknown>) => {
 };
 
 const createReviewIntoDB = async (reviewData: TReview) => {
-  const existsUser = User.findById(reviewData?.user);
+  const existsUser = 19;
 
   if (!existsUser) {
     throw new AppError(NOT_FOUND, 'User not found!');
