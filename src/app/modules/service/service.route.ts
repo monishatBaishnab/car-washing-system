@@ -19,7 +19,7 @@ router.post(
   ServiceControllers.createService,
 );
 
-router.put(
+router.patch(
   '/:id',
   auth(USER_ROLE.admin as TUserRole),
   validateRequest(ServiceValidations.updateServiceValidation),
