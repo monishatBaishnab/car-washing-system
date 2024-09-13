@@ -9,6 +9,12 @@ import { TUserRole } from './user.interface';
 const router = Router();
 
 router.get(
+  '/users',
+  auth(USER_ROLE.admin as TUserRole as TUserRole),
+  UserControllers.fetchAllUser,
+);
+
+router.get(
   '/:email',
   auth(USER_ROLE.admin as TUserRole, USER_ROLE.user as TUserRole),
   UserControllers.fetchUserInfo,

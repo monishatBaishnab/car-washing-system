@@ -17,6 +17,15 @@ const http_status_1 = require("http-status");
 const catchAsync_1 = __importDefault(require("../../utils/catchAsync"));
 const user_services_1 = require("./user.services");
 const sendResponse_1 = __importDefault(require("../../utils/sendResponse"));
+const fetchAllUser = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const user = yield user_services_1.UserServices.fetchAllUsersFromDB();
+    (0, sendResponse_1.default)(res, {
+        success: true,
+        statusCode: http_status_1.OK,
+        message: 'Users retrieved successfully',
+        data: user,
+    });
+}));
 const fetchUserInfo = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const user = yield user_services_1.UserServices.findUserInfoFromDB(req.params.email);
     (0, sendResponse_1.default)(res, {
@@ -68,6 +77,7 @@ const loginUser = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void
     });
 }));
 exports.UserControllers = {
+    fetchAllUser,
     fetchUserInfo,
     createUser,
     updateProfile,

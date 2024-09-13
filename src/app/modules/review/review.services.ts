@@ -24,7 +24,7 @@ const fetchReviewStateFromDB = async () => {
   return {
     totalCompletedWashes,
     totalPositiveReviews,
-    averageRating,
+    averageRating: averageRating?.toFixed(1),
     yearsOfService: '2',
   };
 };

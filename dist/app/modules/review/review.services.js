@@ -34,7 +34,7 @@ const fetchReviewStateFromDB = () => __awaiter(void 0, void 0, void 0, function*
     return {
         totalCompletedWashes,
         totalPositiveReviews,
-        averageRating,
+        averageRating: averageRating === null || averageRating === void 0 ? void 0 : averageRating.toFixed(1),
         yearsOfService: '2',
     };
 });

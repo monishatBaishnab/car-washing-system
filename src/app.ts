@@ -6,7 +6,18 @@ import { appRouter } from './app/routes';
 
 const app = express();
 
-app.use(cors({ origin: ['http://localhost:5173'], credentials: true }));
+// Specify the allowed origin explicitly instead of '*'
+app.use(
+  cors({
+    origin: [
+      'http://localhost:5173',
+      'https://car-washing-system-ten.vercel.app',
+      'https://wash-suite-77385.web.app',
+      'https://wash-suite-77385.firebaseapp.com',
+    ],
+    credentials: true,
+  }),
+);
 app.use(express.json());
 
 // Connects version 1 API routes
